@@ -74,7 +74,7 @@
       </div>
 
       <div class="modal-body">
-        <form>
+        <!-- <form>
           <div class="mb-3">
             <label for="emailInput" class="form-label">Email address</label>
             <input type="email" class="form-control" id="emailInput" placeholder="Enter email">
@@ -84,9 +84,23 @@
             <input type="password" class="form-control" id="passwordInput" placeholder="Password">
           </div>
           <button type="submit" class="btn btn-primary w-100">Login</button>
-        </form>
+        </form> -->
+        <form (submit)="onLogin(); $event.preventDefault()">
+  <div class="mb-3">
+    <label for="emailInput" class="form-label">Email address</label>
+    <input type="email" class="form-control" id="emailInput" [(ngModel)]="email" name="email" required>
+  </div>
+  <div class="mb-3">
+    <label for="passwordInput" class="form-label">Password</label>
+    <input type="password" class="form-control" id="passwordInput" [(ngModel)]="password" name="password" required>
+  </div>
+  <button type="submit" class="btn btn-primary w-100">Login</button>
+</form>
+
         <div class="text-center mt-3">
-          <small>Don't have an account? <a routerLink="/auth/register">Create one</a></small>
+          <small>  Don't have an account?   <a href="#" (click)="goToRegister($event)">Create one</a>
+</small>
+
         </div>
       </div>
     </div>

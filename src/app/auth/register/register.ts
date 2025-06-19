@@ -30,6 +30,7 @@ export class Register {
       this.registerForm.markAllAsTouched();
     }
   }
+  
 
 }
 
