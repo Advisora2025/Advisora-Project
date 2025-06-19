@@ -8,7 +8,8 @@ import { Home } from "./pages/home/home";
   selector: 'app-root',
   imports: [RouterOutlet, Dashboard, Home],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
+  
 })
 export class App {
   protected title = 'Advisora';

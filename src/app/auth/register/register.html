@@ -1,1 +1,38 @@
-<p>register works!</p>
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="card shadow-lg p-4" style="width: 100%; max-width: 500px;">
+    <h3 class="text-center mb-4">Create an Account</h3>
+    
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input type="text" class="form-control" formControlName="username" placeholder="Enter your username">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Phone Number</label>
+        <input type="tel" class="form-control" formControlName="phone" placeholder="Enter your phone number">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Email address</label>
+        <input type="email" class="form-control" formControlName="email" placeholder="Enter your email">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" formControlName="password" placeholder="Enter password">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Confirm Password</label>
+        <input type="password" class="form-control" formControlName="cpassword" placeholder="Confirm your password">
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Register</button>
+
+      <div class="text-center mt-3">
+        <small>Already have an account? <a routerLink="/auth/login">Login here</a></small>
+      </div>
+    </form>
+  </div>
+</div>
