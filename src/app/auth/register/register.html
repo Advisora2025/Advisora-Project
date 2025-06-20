@@ -1,38 +1,52 @@
-<div class="container d-flex justify-content-center align-items-center vh-100">
-  <div class="card shadow-lg p-4" style="width: 100%; max-width: 500px;">
-    <h3 class="text-center mb-4">Create an Account</h3>
-    
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <div class="mb-3">
-        <label class="form-label">Username</label>
-        <input type="text" class="form-control" formControlName="username" placeholder="Enter your username">
-      </div>
+<div class="container mt-4">
+  <h2>Register</h2>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
-      <div class="mb-3">
-        <label class="form-label">Phone Number</label>
-        <input type="tel" class="form-control" formControlName="phone" placeholder="Enter your phone number">
+    <!-- Name -->
+    <div class="mb-3">
+      <label>Name</label>
+      <input type="text" class="form-control" formControlName="name" />
+      <div class="text-danger" *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid">
+        Name is required.
       </div>
+    </div>
 
-      <div class="mb-3">
-        <label class="form-label">Email address</label>
-        <input type="email" class="form-control" formControlName="email" placeholder="Enter your email">
+    <!-- Email -->
+    <div class="mb-3">
+      <label>Email</label>
+      <input type="email" class="form-control" formControlName="email" />
+      <div class="text-danger" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+        Enter a valid email.
       </div>
+    </div>
 
-      <div class="mb-3">
-        <label class="form-label">Password</label>
-        <input type="password" class="form-control" formControlName="password" placeholder="Enter password">
+    <!-- Phone -->
+    <div class="mb-3">
+      <label>Phone</label>
+      <input type="text" class="form-control" formControlName="phone" />
+      <div class="text-danger" *ngIf="registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid">
+        Enter a valid 10-digit phone number.
       </div>
+    </div>
 
-      <div class="mb-3">
-        <label class="form-label">Confirm Password</label>
-        <input type="password" class="form-control" formControlName="cpassword" placeholder="Confirm your password">
+    <!-- Password -->
+    <div class="mb-3">
+      <label>Password</label>
+      <input type="password" class="form-control" formControlName="password" />
+      <div class="text-danger" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+        Password must be at least 6 characters.
       </div>
+    </div>
 
-      <button type="submit" class="btn btn-primary w-100">Register</button>
-
-      <div class="text-center mt-3">
-        <small>Already have an account? <a routerLink="/auth/login">Login here</a></small>
+    <!-- Confirm Password -->
+    <div class="mb-3">
+      <label>Confirm Password</label>
+      <input type="password" class="form-control" formControlName="confirmPassword" />
+      <div class="text-danger" *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.invalid">
+        Confirm password is required.
       </div>
-    </form>
-  </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Register</button>
+  </form>
 </div>

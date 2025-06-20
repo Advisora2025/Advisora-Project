@@ -50,6 +50,6 @@ goToRegister(event: Event) {
   // Wait for modal to fully close
   setTimeout(() => {
     this.router.navigate(['/auth/register']);
-  }, 300);
+  }, 400);
 }
 }
