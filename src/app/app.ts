@@ -12,4 +12,4 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.css',
   
 })
-export class AppComponent {}
+export class App {}

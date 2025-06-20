@@ -23,11 +23,11 @@ import { Session } from './Admin/session/session';
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: Home },
-   {
-    path: 'register',
-    loadComponent: () =>
-      import('./auth/register/register').then((m) => m.Register),
-  },
+  //  {
+  //   path: 'register',
+  //   loadComponent: () =>
+  //     import('./auth/register/register').then((m) => m.Register),
+  // },
   { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
   // { path: 'admin/dashboard', component: Dashboard },
   {
