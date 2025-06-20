@@ -1,10 +1,11 @@
 <div>
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Advisora</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-brand fw-bold" href="#">Advisora</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -24,33 +25,78 @@
           <li class="nav-item">
             <a class="nav-link" href="#">Sessions</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              More
-            </a>
-          </li>
         </ul>
-        <!-- Optional search -->
-        <form class="d-flex" role="search">
-          <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button> -->
-        </form>
       </div>
     </div>
   </nav>
 
-  <!-- Sidebar / Dashboard Items -->
-  <div class="container mt-4">
-    <div class="list-group">
-      <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-        Dashboard Overview
-      </a>
-      <a href="#" class="list-group-item list-group-item-action">Clients</a>
-      <a href="#" class="list-group-item list-group-item-action">Consultants</a>
-      <a href="#" class="list-group-item list-group-item-action">Payments</a>
-      <a href="#" class="list-group-item list-group-item-action">Sessions</a>
-      <a href="#" class="list-group-item list-group-item-action">Reports</a>
-      <a href="#" class="list-group-item list-group-item-action">Settings</a>
+  <!-- Dashboard Cards -->
+  <div class="container mt-5">
+    <div class="row g-4">
+      <!-- Card Template -->
+     
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">Clients</h5>
+            <p class="card-text">Manage client records, contact info, and activity.</p>
+            <a routerLink="/admin/users" routerLinkActive="active" class="btn btn-primary w-100">Manage Clients</a>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">Consultants</h5>
+            <p class="card-text">View, add, or update consultant information.</p>
+            <a routerLink="/admin/consultants" routerLinkActive="active" class="btn btn-primary w-100">View Consultants</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">Payments</h5>
+            <p class="card-text">Track payment history and manage billing details.</p>
+             <a routerLink="/admin/payments" routerLinkActive="active" class="btn btn-primary w-100">Payments</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">Sessions</h5>
+            <p class="card-text">Manage upcoming and past mental health sessions.</p>
+            <a routerLink="/admin/session" routerLinkActive="active" class="btn btn-primary w-100">View Sessions</a>
+            
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">Reports</h5>
+            <p class="card-text">Generate and export consultation and usage reports.</p>
+            <a href="#" class="btn btn-primary w-100">Generate Reports</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">Settings</h5>
+            <p class="card-text">Customize system preferences and admin settings.</p>
+            <a href="#" class="btn btn-primary w-100">Open Settings</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
