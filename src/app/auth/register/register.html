@@ -1,52 +1,57 @@
-<div class="container mt-4">
-  <h2>Register</h2>
+<div class="container mt-5 p-4 shadow-lg rounded bg-white" style="max-width: 600px;">
+  <h2 class="text-center mb-4 text-primary">Create Your Account</h2>
+
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
     <!-- Name -->
-    <div class="mb-3">
-      <label>Name</label>
-      <input type="text" class="form-control" formControlName="name" />
-      <div class="text-danger" *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid">
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" id="name" placeholder="Name" formControlName="name" />
+      <label for="name">Full Name</label>
+      <div class="text-danger small mt-1" *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid">
         Name is required.
       </div>
     </div>
 
     <!-- Email -->
-    <div class="mb-3">
-      <label>Email</label>
-      <input type="email" class="form-control" formControlName="email" />
-      <div class="text-danger" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+    <div class="form-floating mb-3">
+      <input type="email" class="form-control" id="email" placeholder="name@example.com" formControlName="email" />
+      <label for="email">Email address</label>
+      <div class="text-danger small mt-1" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
         Enter a valid email.
       </div>
     </div>
 
     <!-- Phone -->
-    <div class="mb-3">
-      <label>Phone</label>
-      <input type="text" class="form-control" formControlName="phone" />
-      <div class="text-danger" *ngIf="registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid">
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" id="phone" placeholder="Phone" formControlName="phone" />
+      <label for="phone">Phone Number</label>
+      <div class="text-danger small mt-1" *ngIf="registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid">
         Enter a valid 10-digit phone number.
       </div>
     </div>
 
     <!-- Password -->
-    <div class="mb-3">
-      <label>Password</label>
-      <input type="password" class="form-control" formControlName="password" />
-      <div class="text-danger" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+    <div class="form-floating mb-3">
+      <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password" />
+      <label for="password">Password</label>
+      <div class="text-danger small mt-1" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
         Password must be at least 6 characters.
       </div>
     </div>
 
     <!-- Confirm Password -->
-    <div class="mb-3">
-      <label>Confirm Password</label>
-      <input type="password" class="form-control" formControlName="confirmPassword" />
-      <div class="text-danger" *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.invalid">
+    <div class="form-floating mb-4">
+      <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" formControlName="confirmPassword" />
+      <label for="confirmPassword">Confirm Password</label>
+      <div class="text-danger small mt-1" *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.invalid">
         Confirm password is required.
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Register</button>
+    <div class="d-grid">
+      <button type="submit" class="btn btn-primary btn-lg" [disabled]="registerForm.invalid">
+        Register
+      </button>
+    </div>
   </form>
 </div>
