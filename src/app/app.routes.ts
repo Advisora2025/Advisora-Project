@@ -10,8 +10,7 @@
 import { Routes } from '@angular/router';
 
 import { Home } from './pages/home/home';
-// import { Dashboard } from './Admin/dashboard/dashboard';
-import { adminRoutes } from './Admin/admin-routing.module';
+
 import { Users } from './Admin/users/users';
 import { Dashboard } from './Admin/dashboard/dashboard';
 import { Consultants } from './Admin/consultants/consultants';

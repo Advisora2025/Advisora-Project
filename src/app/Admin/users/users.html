@@ -1,1 +1,29 @@
-<p>users works!</p>
+<div class="d-flex justify-content-center" style="min-height: 100vh; padding-top: 60px;">
+  <div class="card shadow p-4" style="min-width: 600px;">
+    <h4 class="card-title text-center mb-4">Client Details</h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped text-center">
+        <thead class="table-dark">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let client of clients">
+            <td>{{ client.name }}</td>
+            <td>{{ client.email }}</td>
+            <td>{{ client.phone }}</td>
+            <td>{{ client.created_at | date: 'short' }}</td>
+            <td>
+              <button class="btn btn-danger btn-sm" (click)="deleteClient(client.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
