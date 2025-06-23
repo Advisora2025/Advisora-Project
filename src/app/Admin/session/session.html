@@ -1,1 +1,33 @@
-<p>session works!</p>
+<div class="d-flex justify-content-center w-100" style="padding-top: 20px;">
+  <div class="card shadow p-4 w-100" style="max-width: 900px;">
+    <h4 class="card-title text-center mb-4">Session Details</h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped text-center">
+        <thead class="table-dark">
+          <tr>
+            <th>Session ID</th>
+            <th>Client ID</th>
+            <th>Consultant ID</th>
+            <th>Scheduled Time</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let session of sessions">
+            <td>{{ session.id }}</td>
+            <td>{{ session.client_id }}</td>
+            <td>{{ session.consultant_id }}</td>
+            <td>{{ session.scheduled_time | date: 'short' }}</td>
+            <td>{{ session.status }}</td>
+            <td>{{ session.created_at | date: 'short' }}</td>
+            <td>
+              <button class="btn btn-danger btn-sm" (click)="deleteSession(session.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

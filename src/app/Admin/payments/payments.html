@@ -1,1 +1,37 @@
-<p>payments works!</p>
+<div class="d-flex justify-content-center w-100" style="padding-top: 20px;">
+  <div class="card shadow p-4 w-100" style="max-width: 900px;">
+    <h4 class="card-title text-center mb-4">Payment Details</h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped text-center">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Session ID</th>
+            <th>Amount</th>
+            <th>Method</th>
+            <th>Status</th>
+            <th>Transaction ID</th>
+            <th>Paid At</th>
+            <th>Created At</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let payment of payments">
+            <td>{{ payment.id }}</td>
+            <td>{{ payment.session_id }}</td>
+            <td>{{ payment.amount | currency }}</td>
+            <td>{{ payment.payment_method }}</td>
+            <td>{{ payment.status }}</td>
+            <td>{{ payment.transaction_id || 'N/A' }}</td>
+            <td>{{ payment.paid_at | date: 'short' }}</td>
+            <td>{{ payment.created_at | date: 'short' }}</td>
+            <td>
+              <button class="btn btn-danger btn-sm" (click)="deletePayment(payment.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
