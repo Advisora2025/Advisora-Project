@@ -1,11 +1,18 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-clientdashboard',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './clientdashboard.html',
-  styleUrl: './clientdashboard.css'
+  styleUrls: ['./clientdashboard.css']
 })
-export class Clientdashboard {
+export class ClientDashboard {
+  constructor(private router: Router) {}
 
+  goToConsultants() {
+    this.router.navigate(['/admin/consultants']);
+  }
 }

@@ -18,7 +18,7 @@ import { Consultants } from './Admin/consultants/consultants';
 import { Payments } from './Admin/payments/payments';
 import { Bookings } from './Admin/bookings/bookings';
 import { Session } from './Admin/session/session';
-import { Clientdashboard } from './pages/clientdashboard/clientdashboard';
+import { ClientDashboard } from './pages/clientdashboard/clientdashboard'
 // export const routes: Routes = [];
 
 export const routes: Routes = [
@@ -27,7 +27,7 @@ export const routes: Routes = [
   {
     path: 'pages',
     children: [
-      { path: 'clientdashboard', component: Clientdashboard }
+      { path: 'clientdashboard', component: ClientDashboard}
     ]
   },
   //  {
