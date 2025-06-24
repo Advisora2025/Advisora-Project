@@ -1,55 +1,110 @@
-import { Component, inject } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { Auth, signInWithEmailAndPassword, sendPasswordResetEmail } from '@angular/fire/auth';
+import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 
-declare var bootstrap: any;
+declare const bootstrap: any;
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './home.html',
-  styleUrl: './home.css'
 })
-export class Home {
+export class Home implements AfterViewInit {
+  email = '';
+  password = '';
+  resetEmail = '';
 
-  email: string = '';
-  password: string = '';
+  constructor(
+    private auth: Auth,
+    private firestore: Firestore,
+    private router: Router
+  ) {}
 
-  private auth: Auth = inject(Auth);
+  ngAfterViewInit(): void {
+    const modalElement = document.getElementById('signupModal');
+    if (modalElement && window.location.href.includes('?showLogin=true')) {
+      const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+      modal.show();
+      history.replaceState({}, document.title, window.location.pathname);
+    }
+  }
 
-  constructor(private router: Router) {}
+  async onLogin() {
+    try {
+      const userCred = await signInWithEmailAndPassword(this.auth, this.email, this.password);
+      const uid = userCred.user.uid;
+      const userDocRef = doc(this.firestore, `users/${uid}`);
+      const userSnap = await getDoc(userDocRef);
 
-  onLogin() {
-    signInWithEmailAndPassword(this.auth, this.email, this.password)
-      .then(() => {
-        // ✅ Close the modal
-        const modal = document.getElementById('signupModal');
-        if (modal) {
-          const bsModal = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
-          bsModal.hide();
+      if (userSnap.exists()) {
+        const userData: any = userSnap.data();
+        const role = userData.role;
+
+        const modalElement = document.getElementById('signupModal');
+        if (modalElement) {
+          const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+          modal.hide();
         }
 
-        // ✅ Navigate without setTimeout (not needed)
-        this.router.navigate(['/pages/clientdashboard']);
-      })
-      .catch((error) => {
-        alert('Invalid credentials');
-        console.error('Login error:', error.message);
-      });
+        switch (role) {
+          case 'client':
+            this.router.navigateByUrl('/pages/clientdashboard');
+            break;
+          case 'consultant':
+            this.router.navigateByUrl('/pages/consultentdashboard');
+            break;
+          case 'admin':
+            this.router.navigateByUrl('/admin');
+            break;
+          default:
+            alert('Unknown role. Please contact support.');
+        }
+      } else {
+        alert('User record not found in database.');
+      }
+    } catch (err: any) {
+      console.error('Login error:', err);
+      alert('Login failed: ' + err.message);
+    }
   }
 
   goToRegister(event: Event) {
     event.preventDefault();
+    this.router.navigateByUrl('/auth/register');
+  }
 
-    const modal = document.getElementById('signupModal');
-    if (modal) {
-      const bsModal = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
-      bsModal.hide();
+  showForgotModal() {
+    const modalElement = document.getElementById('forgotModal');
+    if (modalElement) {
+      const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+      modal.show();
+    }
+  }
+
+  async sendResetLink() {
+    if (!this.resetEmail) {
+      alert('Please enter your email.');
+      return;
     }
 
-    this.router.navigate(['/auth/register']);
+    try {
+      await sendPasswordResetEmail(this.auth, this.resetEmail);
+      alert('Reset link sent! Please check your email.');
+
+      const modalElement = document.getElementById('forgotModal');
+      if (modalElement) {
+        const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+        modal.hide();
+      }
+
+      this.resetEmail = '';
+    } catch (err: any) {
+      console.error('Reset email error:', err);
+      alert('Failed to send reset link: ' + err.message);
+    }
   }
 }

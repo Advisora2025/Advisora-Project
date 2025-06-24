@@ -1,56 +1,68 @@
 <div class="container mt-5 p-4 shadow-lg rounded bg-white" style="max-width: 600px;">
   <h2 class="text-center mb-4 text-primary">Create Your Account</h2>
 
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <!-- Step 1: Select Role -->
+  <div *ngIf="!selectedRole" class="text-center">
+    <p class="mb-3 fs-5">Please select your registration type:</p>
+    <div class="d-grid gap-3">
+      <button class="btn btn-outline-primary btn-lg" (click)="selectRole('client')">
+        🙋‍♂️ Register as Client
+      </button>
+      <button class="btn btn-outline-success btn-lg" (click)="selectRole('consultant')">
+        👨‍⚕️ Register as Consultant
+      </button>
+    </div>
+  </div>
 
-    <!-- Name -->
+  <!-- Step 2: Registration Form -->
+  <form *ngIf="selectedRole" [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="mt-4">
+
     <div class="form-floating mb-3">
-      <input type="text" class="form-control" id="name" placeholder="Name" formControlName="name" />
+      <input type="text" class="form-control" id="name" placeholder="Full Name" formControlName="name" />
       <label for="name">Full Name</label>
-      <div class="text-danger small mt-1" *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid">
+      <div class="text-danger small" *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid">
         Name is required.
       </div>
     </div>
 
-    <!-- Email -->
     <div class="form-floating mb-3">
-      <input type="email" class="form-control" id="email" placeholder="name@example.com" formControlName="email" />
-      <label for="email">Email address</label>
-      <div class="text-danger small mt-1" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
-        Enter a valid email.
+      <input type="email" class="form-control" id="email" placeholder="Email" formControlName="email" />
+      <label for="email">Email Address</label>
+      <div class="text-danger small" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+        Valid email is required.
       </div>
     </div>
 
-    <!-- Phone -->
     <div class="form-floating mb-3">
-      <input type="text" class="form-control" id="phone" placeholder="Phone" formControlName="phone" />
+      <input type="text" class="form-control" id="phone" placeholder="Phone Number" formControlName="phone" />
       <label for="phone">Phone Number</label>
-      <div class="text-danger small mt-1" *ngIf="registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid">
+      <div class="text-danger small" *ngIf="registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid">
         Enter a valid 10-digit phone number.
       </div>
     </div>
 
-    <!-- Password -->
     <div class="form-floating mb-3">
       <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password" />
       <label for="password">Password</label>
-      <div class="text-danger small mt-1" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+      <div class="text-danger small" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
         Password must be at least 6 characters.
       </div>
     </div>
 
-    <!-- Confirm Password -->
     <div class="form-floating mb-4">
       <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" formControlName="confirmPassword" />
       <label for="confirmPassword">Confirm Password</label>
-      <div class="text-danger small mt-1" *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.invalid">
+      <div class="text-danger small" *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.invalid">
         Confirm password is required.
       </div>
     </div>
 
+    <!-- Hidden field for role -->
+    <input type="hidden" formControlName="role" />
+
     <div class="d-grid">
       <button type="submit" class="btn btn-primary btn-lg" [disabled]="registerForm.invalid">
-        Register
+        Register as {{ selectedRole | titlecase }}
       </button>
     </div>
   </form>

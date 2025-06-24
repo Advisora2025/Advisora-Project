@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
-
 import { Auth, createUserWithEmailAndPassword, sendEmailVerification } from '@angular/fire/auth';
 import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 
@@ -11,11 +10,11 @@ import { Firestore, doc, setDoc } from '@angular/fire/firestore';
   selector: 'app-register',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './register.html'
+  templateUrl: './register.html',
 })
-export class RegisterComponent {
-  registerForm: FormGroup;
-
+export class Register {
+  registerForm!: FormGroup;
+  selectedRole: 'client' | 'consultant' | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -23,51 +22,53 @@ export class RegisterComponent {
     private firestore: Firestore,
     private router: Router
   ) {
+    this.initializeForm();
+  }
+
+  initializeForm() {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
+      role: ['']
     });
   }
 
+  selectRole(role: 'client' | 'consultant') {
+    this.selectedRole = role;
+    this.registerForm.patchValue({ role });
+  }
+
   async onSubmit() {
-    if (this.registerForm.invalid) {
-      alert('Please fill the form correctly!');
+    if (this.registerForm.invalid || this.registerForm.value.password !== this.registerForm.value.confirmPassword) {
+      alert('Please fill the form correctly and ensure passwords match.');
       return;
     }
 
-    const { name, email, phone, password, confirmPassword } = this.registerForm.value;
-
-    if (password !== confirmPassword) {
-      alert('Passwords do not match!');
-      return;
-    }
+    const { email, password, name, phone, role } = this.registerForm.value;
 
     try {
-      console.log("Creating user in Firebase Auth...");
       const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
-      const user = userCredential.user;
-      console.log("User created:", user.uid);
+      const uid = userCredential.user.uid;
 
-      await sendEmailVerification(user);
-      alert('Verification email sent! Please check your inbox.');
-
-      console.log("Saving user data to Firestore...");
-      await setDoc(doc(this.firestore, 'users', user.uid), {
+      await setDoc(doc(this.firestore, 'users', uid), {
         name,
         email,
         phone,
-        createdAt: new Date()
+        role,
+        uid
       });
-      console.log("User data saved in Firestore successfully.");
 
-      this.registerForm.reset();
-      alert('Registration complete!');
-      this.router.navigate(['/home']);
+      await sendEmailVerification(userCredential.user);
+
+      alert('Registration successful! Please check your email to verify your account.');
+
+      // Redirect to home page with query parameter to show login popup
+      this.router.navigate(['/home'], { queryParams: { showLogin: true } });
     } catch (error: any) {
-      console.error("Registration failed:", error);
+      console.error('Registration Error:', error);
       alert('Registration failed: ' + error.message);
     }
   }

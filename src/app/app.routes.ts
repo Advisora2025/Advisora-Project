@@ -11,6 +11,9 @@ import { Bookings } from './Admin/bookings/bookings';
 import { Session } from './Admin/session/session';
 import { AdminNavbar } from './components/admin.navbar/admin.navbar';
 import { ClientDashboard } from './pages/clientdashboard/clientdashboard'
+import { ConsultantProfile } from './pages/consultentprofile/consultentprofile';
+import { AboutConsultant } from './pages/aboutconsultant/aboutconsultant';
+import { Consultentdashboard } from './pages/consultentdashboard/consultentdashboard';
 // export const routes: Routes = [];
 
 export const routes: Routes = [
@@ -22,11 +25,11 @@ export const routes: Routes = [
       { path: 'clientdashboard', component: ClientDashboard}
     ]
   },
-  //  {
-  //   path: 'register',
-  //   loadComponent: () =>
-  //     import('./auth/register/register').then((m) => m.Register),
-  // },
+    {
+     path: 'register',
+    loadComponent: () =>
+     import('./auth/register/register').then((m) => m.Register),
+  },
   { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
   // { path: 'admin/dashboard', component: Dashboard },
   {
@@ -42,6 +45,11 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
-  { path: '', redirectTo: 'admin/dashboard', pathMatch: 'full' }
-  // other routes...
+  { path: '', redirectTo: 'admin/dashboard', pathMatch: 'full' },
+  { path: 'pages/consultentprofile', component: ConsultantProfile },
+  { path: 'pages/aboutconsultant/:id', component: AboutConsultant },
+  { path: 'pages/consultentdashboard', component: Consultentdashboard }
+
+
+
 ];

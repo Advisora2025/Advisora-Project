@@ -13,6 +13,6 @@ export class ClientDashboard {
   constructor(private router: Router) {}
 
   goToConsultants() {
-    this.router.navigate(['/admin/consultants']);
+    this.router.navigate(['/pages/consultentprofile']);
   }
 }

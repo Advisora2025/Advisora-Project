@@ -6,13 +6,8 @@
   <title>MindVista - Mental Health Consultant</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
     .navbar-custom {
       background: linear-gradient(to right, #26c6da, #00acc1);
@@ -66,13 +61,9 @@
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
     }
 
-    .modal-title {
-      font-weight: 600;
-    }
+    .modal-title { font-weight: 600; }
 
-    a {
-      cursor: pointer;
-    }
+    a { cursor: pointer; }
 
     .nav-link {
       color: #fff !important;
@@ -83,7 +74,6 @@
       text-decoration: underline;
     }
 
-    /* Highlight on scroll */
     .highlight-on-scroll {
       transition: background-color 0.6s ease, box-shadow 0.6s ease;
     }
@@ -125,17 +115,15 @@
       <div class="highlight-on-scroll p-4 rounded shadow-sm bg-white">
         <h2 class="text-center mb-4">About MindVista</h2>
         <p class="text-justify fs-5">
-          MindVista is your trusted partner in achieving better mental wellness. We connect individuals with certified mental health professionals, offering a safe, private, and accessible platform for therapy, counseling, and emotional support. Whether you're dealing with anxiety, depression, stress, or just need someone to talk to, MindVista provides expert guidance and care tailored to your needs.
+          MindVista is your trusted partner in achieving better mental wellness. We connect individuals with certified mental health professionals, offering a safe, private, and accessible platform for therapy, counseling, and emotional support.
           <br><br>
-          Our goal is to normalize mental health conversations, break stigmas, and provide tools that empower individuals to live fuller lives. With flexible appointments, secure sessions, and compassionate consultants, MindVista ensures you're never alone on your mental health journey.
-          <br><br>
-          Join us in embracing mental wellness with empathy, expertise, and technology.
+          Our goal is to normalize mental health conversations, break stigmas, and provide tools that empower individuals to live fuller lives.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- Bootstrap Modal -->
+  <!-- Login Modal -->
   <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content p-4">
@@ -153,13 +141,16 @@
               <label for="passwordInput" class="form-label">Password</label>
               <input type="password" class="form-control" id="passwordInput" [(ngModel)]="password" name="password" required placeholder="Enter your password">
             </div>
-            <button type="submit" class="btn btn-custom w-100">Login</button>
+            <div class="text-end">
+              <a (click)="showForgotModal()" class="text-decoration-underline text-primary small">Forgot Password?</a>
+            </div>
+            <button type="submit" class="btn btn-custom w-100 mt-3">Login</button>
           </form>
 
           <div class="text-center mt-3">
             <small>
               Don't have an account?
-              <a (click)="goToRegister($event)">Create one</a>
+              <a href="#" (click)="goToRegister($event)">Create one</a>
             </small>
           </div>
         </div>
@@ -167,7 +158,31 @@
     </div>
   </div>
 
-  <!-- Bootstrap Bundle -->
+  <!-- Forgot Password Modal -->
+  <div class="modal fade" id="forgotModal" tabindex="-1" aria-labelledby="forgotModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content p-4">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" id="forgotModalLabel">Reset Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (submit)="sendResetLink(); $event.preventDefault()" novalidate>
+            <div class="mb-3">
+              <label for="resetEmail" class="form-label">Enter your email</label>
+              <input type="email" class="form-control" id="resetEmail" [(ngModel)]="resetEmail" name="resetEmail" required placeholder="e.g. your@email.com">
+            </div>
+            <button type="submit" class="btn btn-custom w-100">Send Reset Link</button>
+            <div class="text-center text-muted small mt-2">
+              A password reset link will be sent to your email.
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

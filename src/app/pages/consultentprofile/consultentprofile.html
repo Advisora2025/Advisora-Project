@@ -1,0 +1,27 @@
+<div class="container">
+  <h2 class="text-center my-4">Our Expert Consultants</h2>
+  <div class="row">
+    <div
+      class="col-md-4 mb-4"
+      *ngFor="let consultant of consultants"
+    >
+      <div class="card h-100 shadow">
+        <img
+          [src]="consultant.img"
+          class="card-img-top"
+          alt="{{ consultant.name }}"
+        />
+        <div class="card-body text-center">
+          <h5 class="card-title">{{ consultant.name }}</h5>
+          <button
+            class="btn btn-primary mt-2"
+            (click)="viewAbout(consultant.id)"
+          >
+            About Us
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
