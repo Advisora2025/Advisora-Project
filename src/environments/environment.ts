@@ -1,13 +1,12 @@
-export const environment = {
-  production: false,
-  firebase: {
-  apiKey: "AIzaSyCpPI9A3cAtIChs8YTKAs_pwFihMOXFHSE",
-  authDomain: "mental-con.firebaseapp.com",
-  projectId: "mental-con",
-  storageBucket: "mental-con.firebasestorage.app",
-  messagingSenderId: "224361495959",
-  appId: "1:224361495959:web:e9efeaadd68fc947bcd8d2",
-  measurementId: "G-95KTXKHR85"
-      }
-};
-
+  export const environment = {
+    production: false,
+    firebase: {
+    apiKey: "AIzaSyDOaggMf4yzdrfCe3pB8tEFsK-zek20sNg",
+    authDomain: "advisora-2fd15.firebaseapp.com",
+    projectId: "advisora-2fd15",
+    storageBucket: "advisora-2fd15.firebasestorage.app",
+    messagingSenderId: "564189918976",
+    appId: "1:564189918976:web:9a612f2aa3d52bcff065e5",
+    measurementId: "G-78HDZWC9L8"
+    }
+  };
