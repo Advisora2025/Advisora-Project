@@ -13,7 +13,7 @@ import { AdminNavbar } from './components/admin.navbar/admin.navbar';
 import { ClientDashboard } from './pages/clientdashboard/clientdashboard'
 import { ConsultantProfile } from './pages/consultentprofile/consultentprofile';
 import { AboutConsultant } from './pages/aboutconsultant/aboutconsultant';
-import { Consultentdashboard } from './pages/consultentdashboard/consultentdashboard';
+import { ConsultentDashboard } from './pages/consultentdashboard/consultentdashboard';
 // export const routes: Routes = [];
 
 export const routes: Routes = [
@@ -48,7 +48,7 @@ export const routes: Routes = [
   { path: '', redirectTo: 'admin/dashboard', pathMatch: 'full' },
   { path: 'pages/consultentprofile', component: ConsultantProfile },
   { path: 'pages/aboutconsultant/:id', component: AboutConsultant },
-  { path: 'pages/consultentdashboard', component: Consultentdashboard }
+  { path: 'pages/consultentdashboard', component: ConsultentDashboard }
 
 
 
