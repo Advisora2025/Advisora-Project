@@ -42,7 +42,10 @@ export class Register {
   }
 
   async onSubmit() {
-    if (this.registerForm.invalid || this.registerForm.value.password !== this.registerForm.value.confirmPassword) {
+    if (
+      this.registerForm.invalid ||
+      this.registerForm.value.password !== this.registerForm.value.confirmPassword
+    ) {
       alert('Please fill the form correctly and ensure passwords match.');
       return;
     }
@@ -53,6 +56,7 @@ export class Register {
       const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
       const uid = userCredential.user.uid;
 
+      // Add to 'users' collection (all roles)
       await setDoc(doc(this.firestore, 'users', uid), {
         name,
         email,
@@ -61,12 +65,24 @@ export class Register {
         uid
       });
 
+      // If role is 'client', also add to 'clients' collection
+      if (role === 'client') {
+        await setDoc(doc(this.firestore, 'clients', uid), {
+          name,
+          email,
+          phone,
+          uid,
+          createdAt: new Date()
+        });
+      }
+
       await sendEmailVerification(userCredential.user);
 
       alert('Registration successful! Please check your email to verify your account.');
 
       // Redirect to home page with query parameter to show login popup
       this.router.navigate(['/home'], { queryParams: { showLogin: true } });
+
     } catch (error: any) {
       console.error('Registration Error:', error);
       alert('Registration failed: ' + error.message);
