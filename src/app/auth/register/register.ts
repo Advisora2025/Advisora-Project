@@ -1,3 +1,4 @@
+// register.ts (Updated)
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -56,7 +57,7 @@ export class Register {
       const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
       const uid = userCredential.user.uid;
 
-      // Add to 'users' collection (all roles)
+      // Add to 'users' collection
       await setDoc(doc(this.firestore, 'users', uid), {
         name,
         email,
@@ -65,9 +66,18 @@ export class Register {
         uid
       });
 
-      // If role is 'client', also add to 'clients' collection
       if (role === 'client') {
         await setDoc(doc(this.firestore, 'clients', uid), {
+          name,
+          email,
+          phone,
+          uid,
+          createdAt: new Date()
+        });
+      }
+
+      if (role === 'consultant') {
+        await setDoc(doc(this.firestore, 'consultants', uid), {
           name,
           email,
           phone,
@@ -79,8 +89,6 @@ export class Register {
       await sendEmailVerification(userCredential.user);
 
       alert('Registration successful! Please check your email to verify your account.');
-
-      // Redirect to home page with query parameter to show login popup
       this.router.navigate(['/home'], { queryParams: { showLogin: true } });
 
     } catch (error: any) {

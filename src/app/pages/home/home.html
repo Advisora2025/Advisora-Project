@@ -4,152 +4,191 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MindVista - Mental Health Consultant</title>
+
+  <!-- Bootstrap & Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"/>
+
   <style>
     html { scroll-behavior: smooth; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-
-    .navbar-custom {
-      background: linear-gradient(to right, #26c6da, #00acc1);
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f9fefe;
     }
 
-    .hero-image {
-      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-                  url('https://images.unsplash.com/photo-1588776814546-bb6f9209cfc6') center/cover no-repeat;
-      height: 90vh;
+    .navbar-custom {
+      background: linear-gradient(to right, #00796b, #004d40);
+    }
+
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.6)),
+        url('https://images.unsplash.com/photo-1557999348-cf97c5f6f1c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1050&q=80') center/cover no-repeat;
+      height: 95vh;
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
       text-align: center;
     }
 
-    .hero-content h1 {
-      font-size: 3rem;
-      font-weight: bold;
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
       animation: fadeInDown 1s ease-in-out;
     }
 
-    .hero-content p {
-      font-size: 1.3rem;
+    .hero p {
+      font-size: 1.25rem;
       animation: fadeInUp 1.2s ease-in-out;
     }
 
     .btn-custom {
-      background-color: #ffffff;
-      color: #00acc1;
-      border: 2px solid #00acc1;
+      background: linear-gradient(90deg, #00bfa5, #1de9b6);
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
     }
 
     .btn-custom:hover {
-      background-color: #00acc1;
-      color: white;
+      transform: scale(1.05);
+      background: linear-gradient(90deg, #1de9b6, #00bfa5);
     }
 
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .running-text {
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid #fff;
+      width: 18ch;
+      animation: typing 6s steps(18) infinite alternate, blink 0.8s step-end infinite;
     }
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 18ch }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent }
+    }
+
+    .about-img {
+      max-width: 100%;
+      border-radius: 1rem;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
     }
 
     .modal-content {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.95);
       border-radius: 1rem;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
     }
 
-    .modal-title { font-weight: 600; }
-
-    a { cursor: pointer; }
-    
-    .nav-link {
-      color: #fff !important;
-      font-weight: 500;
+    .form-icon {
+      position: absolute;
+      top: 12px;
+      left: 14px;
+      color: #00acc1;
     }
 
-    .nav-link:hover {
-      text-decoration: underline;
+    .form-group {
+      position: relative;
     }
 
-    .highlight-on-scroll {
-      transition: background-color 0.6s ease, box-shadow 0.6s ease;
+    .form-control-icon {
+      padding-left: 2.5rem;
+      border-radius: 0.5rem;
     }
 
-    .highlight-on-scroll:target {
-      background-color: #e0f7fa;
-      box-shadow: 0 0 20px rgba(38, 198, 218, 0.5);
+    .footer {
+      background-color: #004d40;
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    .section-title {
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #00796b;
     }
   </style>
 </head>
-<body>
 
+<body>
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-custom shadow-sm">
     <div class="container-fluid">
       <a class="navbar-brand d-flex align-items-center text-white fw-bold" href="#">
-        <img src="https://img.icons8.com/color/48/000000/brain.png" alt="Logo" width="40" height="40" class="me-2">
+        <img src="https://img.icons8.com/color/48/000000/brain.png" width="40" height="40" class="me-2">
         MindVista
       </a>
       <div class="ms-auto d-flex gap-3">
-        <a class="nav-link" href="#about">About Us</a>
-        <a class="nav-link" href="#">Reviews</a>
-        <button class="btn btn-custom fw-semibold" data-bs-toggle="modal" data-bs-target="#signupModal">Sign In</button>
+        <a class="nav-link text-white" href="#about">About</a>
+        <a class="nav-link text-white" href="#">Reviews</a>
+        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#signupModal">Sign In</button>
       </div>
     </div>
   </nav>
 
   <!-- Hero Section -->
-  <div class="hero-image">
-    <div class="hero-content text-white">
-      <h1>Your Mental Wellness Matters</h1>
-      <p>Expert guidance, personalized support, and a journey to better mental health.</p>
-    </div>
-  </div>
+  <section class="hero">
+    <h1 class="animate__animated animate__fadeInDown">Your Mental Wellness Matters</h1>
+    <p class="mt-3"><span class="running-text">Welcome to MindVista!</span></p>
+    <button class="btn btn-custom mt-4" data-bs-toggle="modal" data-bs-target="#signupModal">Start Your Journey</button>
+  </section>
 
-  <!-- About Us Section -->
+  <!-- About Section -->
   <section id="about" class="py-5 bg-light">
     <div class="container">
-      <div class="highlight-on-scroll p-4 rounded shadow-sm bg-white">
-        <h2 class="text-center mb-4">About MindVista</h2>
-        <p class="text-justify fs-5">
-          MindVista is your trusted partner in achieving better mental wellness. We connect individuals with certified mental health professionals, offering a safe, private, and accessible platform for therapy, counseling, and emotional support.
-          <br><br>
-          Our goal is to normalize mental health conversations, break stigmas, and provide tools that empower individuals to live fuller lives.
-        </p>
+      <h2 class="section-title animate__animated animate__fadeInUp">About MindVista</h2>
+      <div class="row align-items-center">
+        <div class="col-md-6 animate__animated animate__fadeInLeft">
+          <p class="fs-5">
+            MindVista connects individuals to professional consultants who care. Whether you're dealing with stress, anxiety, or just need someone to talk to — we’re here to help.
+            <br><br>
+            We believe mental health support should be accessible, affordable, and stigma-free.
+          </p>
+        </div>
+        <div class="col-md-6 animate__animated animate__fadeInRight">
+
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Login Modal -->
-  <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+  <div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content p-4">
         <div class="modal-header border-0">
-          <h5 class="modal-title" id="signupModalLabel">Login to Your Account</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title">Login to Your Account</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
           <form (submit)="onLogin(); $event.preventDefault()" class="needs-validation" novalidate>
-            <div class="mb-3">
-              <label for="emailInput" class="form-label">Email address</label>
-              <input type="email" class="form-control" id="emailInput" [(ngModel)]="email" name="email" required placeholder="Enter your email">
+            <div class="form-group mb-3">
+              <i class="bi bi-envelope-fill form-icon"></i>
+              <input type="email" class="form-control form-control-icon" id="emailInput" [(ngModel)]="email" name="email" required placeholder="Email address">
             </div>
-            <div class="mb-3">
-              <label for="passwordInput" class="form-label">Password</label>
-              <input type="password" class="form-control" id="passwordInput" [(ngModel)]="password" name="password" required placeholder="Enter your password">
+            <div class="form-group mb-3">
+              <i class="bi bi-lock-fill form-icon"></i>
+              <input type="password" class="form-control form-control-icon" id="passwordInput" [(ngModel)]="password" name="password" required placeholder="Password">
             </div>
             <div class="text-end">
               <a (click)="showForgotModal()" class="text-decoration-underline text-primary small">Forgot Password?</a>
             </div>
             <button type="submit" class="btn btn-custom w-100 mt-3">Login</button>
           </form>
-
           <div class="text-center mt-3">
             <small>
-              Don't have an account?
+              Don’t have an account?
               <a href="#" (click)="goToRegister($event)">Create one</a>
             </small>
           </div>
@@ -158,19 +197,19 @@
     </div>
   </div>
 
-  <!-- Forgot Password Modal -->
-  <div class="modal fade" id="forgotModal" tabindex="-1" aria-labelledby="forgotModalLabel" aria-hidden="true">
+  <!-- Forgot Modal -->
+  <div class="modal fade" id="forgotModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content p-4">
         <div class="modal-header border-0">
-          <h5 class="modal-title" id="forgotModalLabel">Reset Password</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title">Reset Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
           <form (submit)="sendResetLink(); $event.preventDefault()" novalidate>
-            <div class="mb-3">
-              <label for="resetEmail" class="form-label">Enter your email</label>
-              <input type="email" class="form-control" id="resetEmail" [(ngModel)]="resetEmail" name="resetEmail" required placeholder="e.g. your@email.com">
+            <div class="form-group mb-3">
+              <i class="bi bi-envelope-fill form-icon"></i>
+              <input type="email" class="form-control form-control-icon" id="resetEmail" [(ngModel)]="resetEmail" name="resetEmail" required placeholder="Enter your email">
             </div>
             <button type="submit" class="btn btn-custom w-100">Send Reset Link</button>
             <div class="text-center text-muted small mt-2">
@@ -181,6 +220,13 @@
       </div>
     </div>
   </div>
+
+  <!-- Footer -->
+  <footer class="footer mt-5">
+    <div class="container">
+      <small>&copy; 2025 MindVista. All rights reserved.</small>
+    </div>
+  </footer>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

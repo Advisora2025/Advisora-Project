@@ -13,7 +13,7 @@
   import { ClientDashboard } from './pages/clientdashboard/clientdashboard'
   import { ConsultantProfile } from './pages/consultentprofile/consultentprofile';
   import { AboutConsultant } from './pages/aboutconsultant/aboutconsultant';
-  import { ConsultentDashboard } from './pages/consultentdashboard/consultentdashboard';
+  import {ConsultentDashboard  } from './pages/consultentdashboard/consultentdashboard';
   import { EditProfile } from './Admin/edit-profile/edit-profile';
 import { AdminGuard } from './Admin/admin.guard';
   // export const routes: Routes = [];

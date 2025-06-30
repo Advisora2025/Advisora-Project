@@ -1,9 +1,10 @@
+// home.ts (Updated login logic)
 import { Component, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Auth, signInWithEmailAndPassword, sendPasswordResetEmail } from '@angular/fire/auth';
-import { Firestore, doc, getDoc } from '@angular/fire/firestore';
+import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
 
 declare const bootstrap: any;
 
@@ -43,6 +44,21 @@ export class Home implements AfterViewInit {
       if (userSnap.exists()) {
         const userData: any = userSnap.data();
         const role = userData.role;
+
+        // Auto-create consultant doc if not already created
+        if (role === 'consultant') {
+          const consultantRef = doc(this.firestore, `consultants/${uid}`);
+          const consultantSnap = await getDoc(consultantRef);
+          if (!consultantSnap.exists()) {
+            await setDoc(consultantRef, {
+              name: userData.name,
+              email: userData.email,
+              phone: userData.phone,
+              uid,
+              createdAt: new Date()
+            });
+          }
+        }
 
         const modalElement = document.getElementById('signupModal');
         if (modalElement) {
