@@ -9,20 +9,18 @@
             <th>Email</th>
             <th>Phone</th>
             <th>Date</th>
-            <th>Action</th>
+           
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let client of clients">
-            <td>{{ client.name }}</td>
-            <td>{{ client.email }}</td>
-            <td>{{ client.phone }}</td>
-            <td>{{ client.created_at | date: 'short' }}</td>
-            <td>
-              <button class="btn btn-danger btn-sm" (click)="deleteClient(client.id)">Delete</button>
-            </td>
-          </tr>
-        </tbody>
+      <tr *ngFor="let client of users">
+        <td>{{ client.name }}</td>
+        <td>{{ client.email }}</td>
+        <td>{{ client.phone }}</td>
+        <td>{{ client.createdAt?.toDate() | date:'medium' }}</td>
+        
+      </tr>
+    </tbody>
       </table>
     </div>
   </div>

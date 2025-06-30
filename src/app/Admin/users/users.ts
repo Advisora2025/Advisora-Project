@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Client } from '../../services/client';
-import { ClientService } from '../../services/client.service';
+
+import { FirebaseDataService } from '../../services/firebase-data.service';
+
 
 
 @Component({
@@ -13,29 +14,25 @@ import { ClientService } from '../../services/client.service';
   
 })
 export class Users implements OnInit {
-  clients: Client[] = [];
-
-  constructor(private clientService: ClientService) {}
-
+  users: any[] = [];
+  
+  constructor(private firebaseData: FirebaseDataService) {}
   ngOnInit(): void {
-    this.clientService.getClients().subscribe((data) => {
-      this.clients = data;
+    this.loadClients();
+  }
+
+  loadClients(): void {
+    this.firebaseData.getClients().subscribe({
+      next: (data) => {
+        this.users = data;
+      },
+      error: (err) => {
+        console.error('Error loading clients:', err);
+        // Handle error (e.g., show error message)
+      }
     });
   }
 
-   fetchClients(): void {
-    this.clientService.getClients().subscribe((data) => {
-      this.clients = data;
-    });
-  }
-  deleteClient(id: number): void {
-    const confirmDelete = confirm('Are you sure you want to delete this client?');
-    if (confirmDelete) {
-      this.clientService.deleteClient(id).subscribe(() => {
-        // Remove from UI
-        this.clients = this.clients.filter(client => client.id !== id);
-      });
-    }
-  }
+ 
 
 }

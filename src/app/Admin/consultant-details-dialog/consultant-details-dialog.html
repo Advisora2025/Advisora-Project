@@ -1,0 +1,136 @@
+<!-- 
+
+<h2 mat-dialog-title>Consultant Details</h2>
+
+<mat-dialog-content class="dialog-scrollable">
+  <div class="details-container">
+    <div class="image-section">
+      <img [src]="consultant.imageUrl || 'assets/default-profile.png'" 
+           alt="Profile" 
+           class="profile-image-large">
+
+      <div class="certificate-section" *ngIf="consultant.certificateUrl">
+        <h3>Certificate</h3>
+        <button mat-raised-button color="accent" (click)="viewCertificate()">
+          View Certificate
+        </button>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h2>{{ consultant.name }}</h2>
+      <mat-chip color="primary" selected>{{ consultant.expertise }}</mat-chip>
+
+      <div class="info-group">
+        <h3>Bio</h3>
+        <p>{{ consultant.bio || 'No bio available' }}</p>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <strong>Email:</strong>
+          <p>{{ consultant.email || 'N/A' }}</p>
+        </div>
+
+        <div class="info-item">
+          <strong>Phone:</strong>
+          <p>{{ consultant.phone || 'N/A' }}</p>
+        </div>
+
+        <div class="info-item">
+          <strong>Hourly Rate:</strong>
+          <p>{{ consultant.rates | currency: 'INR' }}</p>
+        </div>
+
+        <div class="info-item">
+          <strong>Experience:</strong>
+          <p>{{ consultant.experience || '0' }} years</p>
+        </div>
+
+        <div class="info-item" *ngIf="consultant.availabilityFrom && consultant.availabilityTo">
+          <strong>Availability:</strong>
+          <p>
+            {{ consultant.availabilityFrom | date: 'shortTime' }} - 
+            {{ consultant.availabilityTo | date: 'shortTime' }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>
+ -->
+
+
+ <h2 mat-dialog-title>Consultant Details</h2>
+
+<mat-dialog-content class="dialog-scrollable">
+  <div class="details-container">
+    <div class="image-section">
+      <img [src]="consultant.imageUrl || 'assets/default-profile.png'" 
+           alt="Profile" 
+           class="profile-image-large">
+
+      <!-- Name below image -->
+      <h2 class="consultant-name mt-3">{{ consultant.name }}</h2>
+
+      <!-- Expertise chip -->
+      <mat-chip  color="primary" selected>{{ consultant.expertise }}</mat-chip>
+
+      <!-- View Certificate -->
+      <div class="certificate-section mt-3" *ngIf="consultant.certificateUrl">
+        <button mat-raised-button color="accent" (click)="viewCertificate()">
+          View Certificate
+        </button>
+      </div>
+    </div>
+
+    <mat-divider class="my-3"></mat-divider>
+
+    <div class="info-section">
+      <div class="info-group">
+        <h3>Bio</h3>
+        <p>{{ consultant.bio || 'No bio available' }}</p>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <strong>Email:</strong>
+          <p>{{ consultant.email || 'N/A' }}</p>
+        </div>
+
+        <div class="info-item">
+          <strong>Phone:</strong>
+          <p>{{ consultant.phone || 'N/A' }}</p>
+        </div>
+
+        <div class="info-item">
+          <strong>Hourly Rate:</strong>
+          <p>{{ consultant.rates | currency: 'INR' }}</p>
+        </div>
+
+        <div class="info-item">
+          <strong>Experience:</strong>
+          <p>{{ consultant.experience || '0' }} years</p>
+        </div>
+
+        <div class="info-item" *ngIf="consultant.availabilityFrom && consultant.availabilityTo">
+          <strong>Availability:</strong>
+          <p>
+            {{ consultant.availabilityFrom | date: 'shortTime' }} - 
+            {{ consultant.availabilityTo | date: 'shortTime' }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

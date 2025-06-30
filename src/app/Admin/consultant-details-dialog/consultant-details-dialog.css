@@ -1,0 +1,36 @@
+.dialog-scrollable {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.details-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.image-section {
+  text-align: center;
+}
+
+.profile-image-large {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+}
+
+.info-section {
+  padding: 8px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.info-item p {
+  margin: 4px 0 0;
+}

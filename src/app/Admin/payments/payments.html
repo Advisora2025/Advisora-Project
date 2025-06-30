@@ -17,20 +17,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let payment of payments">
-            <td>{{ payment.id }}</td>
-            <td>{{ payment.session_id }}</td>
-            <td>{{ payment.amount | currency }}</td>
-            <td>{{ payment.payment_method }}</td>
-            <td>{{ payment.status }}</td>
-            <td>{{ payment.transaction_id || 'N/A' }}</td>
-            <td>{{ payment.paid_at | date: 'short' }}</td>
-            <td>{{ payment.created_at | date: 'short' }}</td>
-            <td>
-              <button class="btn btn-danger btn-sm" (click)="deletePayment(payment.id)">Delete</button>
-            </td>
-          </tr>
+         
         </tbody>
+        
       </table>
     </div>
   </div>

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Consultant } from '../../services/consultant';
-import { ConsultantService } from '../../services/consultant.service';
+import { MatDialog } from '@angular/material/dialog';
+import { FirebaseDataService } from '../../services/firebase-data.service';
+import { ConsultantDetailsDialog } from '../consultant-details-dialog/consultant-details-dialog';
+
 
 @Component({
   selector: 'app-consultants',
@@ -11,32 +13,39 @@ import { ConsultantService } from '../../services/consultant.service';
   styleUrl: './consultants.css',
   
 })
-export class Consultants implements OnInit {
-  consultants: Consultant[] = [];
+export class Consultants  implements OnInit {
 
-  constructor(private consultantService: ConsultantService) {}
+  consultants: any[] = [];
 
-  ngOnInit(): void {
-    this.fetchConsultants();
+  constructor(
+    private firebaseData: FirebaseDataService,
+    private dialog: MatDialog)
+      {}
+
+  openDetailsDialog(consultant: Consultants): void {
+    this.dialog.open(ConsultantDetailsDialog, {
+      width: '800px',
+      data: consultant
+    });
   }
-
-  fetchConsultants(): void {
-    this.consultantService.getConsultants().subscribe((data) => {
+  ngOnInit(): void {
+    
+    this.firebaseData.getConsultants().subscribe(data => {
       this.consultants = data;
     });
   }
+  async updateStatus(consultant: any, newStatus: 'accepted' | 'denied') {
+  const confirmAction = confirm(`Are you sure you want to ${newStatus} this consultant?`);
+  if (!confirmAction) return;
 
-  deleteConsultant(id: number): void {
-    const confirmDelete = confirm('Are you sure you want to delete this consultant?');
-    if (confirmDelete) {
-      this.consultantService.deleteConsultant(id).subscribe(() => {
-        this.consultants = this.consultants.filter(c => c.id !== id);
-      },
-       error => {
-      console.error('Error deleting consultant:', error);
-    });
-      
-    }
+  try {
+    await this.firebaseData.updateConsultantStatus(consultant.id, newStatus);
+    consultant.status = newStatus; // update view
+  } catch (err) {
+    console.error('Error updating status:', err);
+    alert('Failed to update status. Try again.');
   }
+}
+
 
 }

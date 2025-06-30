@@ -1,1 +1,61 @@
 /* You can add global styles to this file, and also import other style files */
+/* Sidebar Pluto Style */
+.sidebar {
+  background-color: #2d2f33;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar .nav-link {
+  color: #bfc9d4;
+  padding: 10px 15px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  background-color: #007bff;
+  color: #fff !important;
+}
+
+/* Admin Name */
+.sidebar h5 {
+  font-size: 1rem;
+  color: #ffffff;
+}
+
+/* Buttons in Sidebar */
+.sidebar .btn-outline-secondary {
+  border-color: #6c757d;
+  color: #dee2e6;
+}
+
+.sidebar .btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+/* Main Content */
+.main-content {
+  background-color: #f4f6f9;
+  padding: 1.5rem;
+  min-height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #fff !important;
+  border-bottom: 1px solid #dee2e6;
+}
+
+/* Content Card Styling (optional inside outlet) */
+.content-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
