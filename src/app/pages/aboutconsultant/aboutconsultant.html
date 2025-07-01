@@ -1,1 +1,38 @@
-<p>aboutconsultant works!</p>
+<div class="container py-5" *ngIf="consultant">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="row g-0">
+          <!-- Consultant Image -->
+          <div class="col-md-4">
+            <img
+              [src]="consultant.imageUrl || 'assets/default-profile.png'"
+              class="img-fluid h-100 rounded-start object-fit-cover"
+              alt="{{ consultant.name }}"
+              style="object-fit: cover;"
+            />
+          </div>
+
+          <!-- Consultant Info -->
+          <div class="col-md-8">
+            <div class="card-body">
+              <h3 class="card-title">{{ consultant.name }}</h3>
+              <p class="text-muted mb-2"><strong>Expertise:</strong> {{ consultant.expertise }}</p>
+              <p><strong>Email:</strong> {{ consultant.email || 'N/A' }}</p>
+              <p><strong>Phone:</strong> {{ consultant.phone || 'N/A' }}</p>
+              <p><strong>Rates:</strong> ₹{{ consultant.consultationRates }}</p>
+              <p *ngIf="consultant.bio"><strong>About:</strong> {{ consultant.bio }}</p>
+
+              <button class="btn btn-success mt-3" (click)="bookNow()">Book Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading fallback -->
+<div *ngIf="!consultant" class="text-center text-muted my-5">
+  <p>Loading consultant details...</p>
+</div>

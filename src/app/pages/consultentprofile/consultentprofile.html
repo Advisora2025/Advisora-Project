@@ -1,18 +1,31 @@
 <div class="container">
   <h2 class="text-center my-4">Our Expert Consultants</h2>
+
+  <!-- Loading indicator -->
+  <div *ngIf="consultants.length === 0" class="text-center text-muted">
+    <p>Loading consultants...</p>
+  </div>
+
+  <!-- Consultant Cards -->
   <div class="row">
-    <div
-      class="col-md-4 mb-4"
-      *ngFor="let consultant of consultants"
-    >
+    <div class="col-md-4 mb-4" *ngFor="let consultant of consultants">
       <div class="card h-100 shadow">
+        <!-- Consultant Image -->
         <img
-          [src]="consultant.img"
+          [src]="consultant.imageUrl || 'assets/default-profile.png'"
           class="card-img-top"
           alt="{{ consultant.name }}"
+          style="height: 250px; object-fit: cover;"
         />
+
         <div class="card-body text-center">
+          <!-- Consultant Name -->
           <h5 class="card-title">{{ consultant.name }}</h5>
+
+          <!-- Consultant Expertise -->
+          <p class="text-muted mb-2">{{ consultant.expertise }}</p>
+
+          <!-- About Button -->
           <button
             class="btn btn-primary mt-2"
             (click)="viewAbout(consultant.id)">
@@ -23,4 +36,3 @@
     </div>
   </div>
 </div>
-

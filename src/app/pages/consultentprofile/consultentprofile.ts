@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FirebaseDataService } from '../../services/firebase-data.service'; // adjust path as needed
 
 @Component({
   selector: 'app-consultentprofile',
@@ -9,19 +10,21 @@ import { CommonModule } from '@angular/common';
   templateUrl: './consultentprofile.html',
   styleUrls: ['./consultentprofile.css']
 })
-export class ConsultantProfile {
-  constructor(private router: Router) {}
+export class ConsultantProfile implements OnInit {
+  consultants: any[] = [];
 
-  consultants = [
-    { id: 1, name: 'Dr. Aisha Rao', img: 'assets/aisha.jpg' },
-    { id: 2, name: 'Dr. Rahul Verma', img: 'assets/rahul.jpg' },
-    { id: 3, name: 'Dr. Meera Sen', img: 'assets/meera.jpg' },
-    { id: 4, name: 'Dr. Arjun Das', img: 'assets/arjun.jpg' },
-    { id: 5, name: 'Dr. Neha Sharma', img: 'assets/neha.jpg' },
-    { id: 6, name: 'Dr. Karan Mehta', img: 'assets/karan.jpg' }
-  ];
+  constructor(
+    private router: Router,
+    private firebaseData: FirebaseDataService
+  ) {}
 
-  viewAbout(id: number) {
+  ngOnInit(): void {
+    this.firebaseData.getAcceptedConsultants().subscribe(data => {
+      this.consultants = data;
+    });
+  }
+
+  viewAbout(id: string) {
     this.router.navigate(['/pages/aboutconsultant', id]);
   }
 }
