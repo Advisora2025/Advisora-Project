@@ -3,19 +3,16 @@
 
   import { Home } from './pages/home/home';
 
-  import { Users } from './Admin/users/users';
-  import { Dashboard } from './Admin/dashboard/dashboard';
-  import { Consultants } from './Admin/consultants/consultants';
-  import { Payments } from './Admin/payments/payments';
-  import { Bookings } from './Admin/bookings/bookings';
-  import { Session } from './Admin/session/session';
+
   import { AdminNavbar } from './components/admin.navbar/admin.navbar';
   import { ClientDashboard } from './pages/clientdashboard/clientdashboard'
   import { ConsultantProfile } from './pages/consultentprofile/consultentprofile';
   import { AboutConsultant } from './pages/aboutconsultant/aboutconsultant';
   import {ConsultentDashboard  } from './pages/consultentdashboard/consultentdashboard';
+
   import { EditProfile } from './Admin/edit-profile/edit-profile';
 import { AdminGuard } from './Admin/admin.guard';
+import { Consultantdashboard } from './consultant/consultantdashboard/consultantdashboard';
   // export const routes: Routes = [];
 
   export const routes: Routes = [
@@ -41,21 +38,16 @@ import { AdminGuard } from './Admin/admin.guard';
       component:AdminNavbar,
        canActivate: [AdminGuard],
        loadChildren: () => import('./Admin/admin-routing.module').then(m => m.adminRoutes)
-      // children: [
-      //   { path: 'dashboard', component: Dashboard },
-      //   { path: 'users', component: Users },
-      //   { path: 'consultants', component: Consultants },
-      //   { path: 'payments', component: Payments },
-      //   { path: 'bookings', component: Bookings},
-      //   { path: 'session', component: Session},
-      //   { path: 'edit-profile', component: EditProfile},
-      //   { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
-      // ]
+      
     },
     { path: '', redirectTo: 'admin/dashboard', pathMatch: 'full' },
     { path: 'pages/consultentprofile', component: ConsultantProfile },
+
+
     { path: 'pages/aboutconsultant/:id', component: AboutConsultant },
-    { path: 'pages/consultentdashboard', component: ConsultentDashboard }
+    { 
+      path: 'consultant', 
+      loadChildren: () =>  import('./consultant/consultant-routing.module').then((m) => m.consultantRoutes),}
 
 
 

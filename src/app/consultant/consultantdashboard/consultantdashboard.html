@@ -1,0 +1,67 @@
+<!-- consultantdashboard.html -->
+<div class="d-flex flex-column flex-md-row min-vh-100 bg-light">
+  <!-- Sidebar -->
+  <div class="bg-white shadow-sm p-4 d-flex flex-column justify-content-between" style="width: 260px;">
+    <div>
+      <button class="btn btn-outline-primary w-100 mb-3" (click)="editProfile = true">✏️ Edit Profile</button>
+      <!-- <button class="btn btn-outline-primary w-100 mb-3" [routerLink]="['/consultant/requests']">📥 Requests</button> -->
+      <a routerLink="/consultant/session" class="btn btn-outline-primary w-100 mb-3">📥 Requests</a>
+      <button class="btn btn-outline-primary w-100 mb-3" >📅 My Bookings</button>
+      <button class="btn btn-outline-primary w-100 mb-3" >💳 Payments</button>
+      
+    </div>
+        <div>
+      <button class="btn btn-outline-danger w-100 mt-3" (click)="logout()">🔓 Logout</button>
+    </div>
+
+  </div>
+
+  <!-- Dashboard View -->
+  <div class="flex-grow-1 p-4" *ngIf="!editProfile && consultantData">
+    <div class="text-center mb-4">
+      <h2>Welcome, {{ consultantData.name }}</h2>
+      <img [src]="consultantData.imageUrl" alt="Profile Image" class="rounded-circle mb-2" width="150" height="150">
+      <p>{{ consultantData.bio }}</p>
+      <p><strong>Expertise:</strong> {{ consultantData.expertise }}</p>
+      <p><strong>Availability:</strong> {{ consultantData.availabilityFrom }} to {{ consultantData.availabilityTo }}</p>
+      <p><strong>Consultation Rates:</strong> ₹{{ consultantData.consultationRates }}</p>
+      <button class="btn btn-outline-secondary" (click)="viewCertificate()">📄 View Certificate</button>
+    </div>
+  </div>
+
+  <!-- Edit Profile Form -->
+  <div class="flex-grow-1 p-4" *ngIf="editProfile">
+    <form #profileForm="ngForm" (ngSubmit)="saveProfile()">
+      <!-- Basic Fields -->
+      <div class="mb-3"><label>Name</label><input class="form-control" [(ngModel)]="consultantData.name" name="name" required readonly /></div>
+      <div class="mb-3"><label>Email</label><input class="form-control" [(ngModel)]="consultantData.email" name="email" required readonly /></div>
+      <div class="mb-3"><label>Phone</label><input class="form-control" [(ngModel)]="consultantData.phone" name="phone" required readonly /></div>
+      <div class="mb-3"><label>Bio</label><textarea class="form-control" [(ngModel)]="consultantData.bio" name="bio" required></textarea></div>
+      <div class="mb-3"><label>Expertise</label><input class="form-control" [(ngModel)]="consultantData.expertise" name="expertise" required /></div>
+      <div class="mb-3"><label>Availability From</label><input type="datetime-local" class="form-control" [(ngModel)]="consultantData.availabilityFrom" name="availabilityFrom" required /></div>
+      <div class="mb-3"><label>Availability To</label><input type="datetime-local" class="form-control" [(ngModel)]="consultantData.availabilityTo" name="availabilityTo" required /></div>
+
+      <!-- Image Upload -->
+      <div class="mb-3">
+        <label>Profile Image</label>
+        <input type="file" class="form-control" (change)="uploadImage($event)" accept="image/*" required />
+        <div *ngIf="uploadingImage">Uploading image...</div>
+      </div>
+
+      <!-- Certificate Upload -->
+      <div class="mb-3">
+        <label>Degree Certificate (PDF)</label>
+        <input type="file" class="form-control" (change)="uploadCertificate($event)" accept="application/pdf" required />
+        <div *ngIf="uploadingCertificate">Uploading certificate...</div>
+      </div>
+
+      <div class="mb-3">
+        <label>Consultation Rates (₹)</label>
+        <input type="number" class="form-control" [(ngModel)]="consultantData.consultationRates" name="consultationRates" required />
+      </div>
+
+      <button class="btn btn-success" type="submit">💾 Save</button>
+      <button class="btn btn-secondary ms-2" type="button" (click)="cancelEdit()">Cancel</button>
+    </form>
+  </div>
+</div>

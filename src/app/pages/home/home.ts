@@ -71,7 +71,7 @@ export class Home implements AfterViewInit {
             this.router.navigateByUrl('/pages/clientdashboard');
             break;
           case 'consultant':
-            this.router.navigateByUrl('/pages/consultentdashboard');
+            this.router.navigateByUrl('/consultant/consultantdashboard');
             break;
           case 'admin':
             this.router.navigateByUrl('/admin');
