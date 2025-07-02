@@ -13,6 +13,7 @@
   import { EditProfile } from './Admin/edit-profile/edit-profile';
 import { AdminGuard } from './Admin/admin.guard';
 import { Consultantdashboard } from './consultant/consultantdashboard/consultantdashboard';
+import { ConsultantSidebar } from './components/consultant-sidebar/consultant-sidebar';
   // export const routes: Routes = [];
 
   export const routes: Routes = [
@@ -42,11 +43,11 @@ import { Consultantdashboard } from './consultant/consultantdashboard/consultant
     },
     { path: '', redirectTo: 'admin/dashboard', pathMatch: 'full' },
     { path: 'pages/consultentprofile', component: ConsultantProfile },
-
-
     { path: 'pages/aboutconsultant/:id', component: AboutConsultant },
+    
     { 
       path: 'consultant', 
+      component: ConsultantSidebar,
       loadChildren: () =>  import('./consultant/consultant-routing.module').then((m) => m.consultantRoutes),}
 
 

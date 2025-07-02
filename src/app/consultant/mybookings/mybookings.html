@@ -1,0 +1,21 @@
+<div class="container mt-4">
+  <h4 class="mb-4">📅 My Bookings (Accepted Sessions)</h4>
+
+  <div *ngIf="bookings$ | async as bookings">
+    <div *ngIf="bookings.length > 0; else noBookings">
+      <div class="card mb-3" *ngFor="let booking of bookings">
+        <div class="card-body">
+          <p><strong>Client Email:</strong> {{ booking.clientEmail }}</p>
+          <p><strong>Scheduled Time:</strong> {{ booking.availableTime }}</p>
+          <!-- <p><strong>Consultation Rate:</strong> ₹{{ booking.consultationRates }}</p> -->
+          <p><strong>Status:</strong> <span class="text-success">Accepted</span></p>
+          <p><strong>Payment:</strong> <span class="text-warning fw-semibold">Pending</span></p>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noBookings>
+      <p>No accepted bookings yet.</p>
+    </ng-template>
+  </div>
+</div>

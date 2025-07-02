@@ -1,0 +1,14 @@
+<div class="container">
+  <h3>🔐 Add Razorpay Keys</h3>
+  <form (ngSubmit)="saveKeys()">
+    <div class="mb-3">
+      <label for="keyId">Razorpay Key ID</label>
+      <input type="text" id="keyId" [(ngModel)]="keyId" name="keyId" class="form-control" required />
+    </div>
+    <div class="mb-3">
+      <label for="keySecret">Razorpay Key Secret</label>
+      <input type="password" id="keySecret" [(ngModel)]="keySecret" name="keySecret" class="form-control" required />
+    </div>
+    <button class="btn btn-primary" type="submit">Save</button>
+  </form>
+</div>
