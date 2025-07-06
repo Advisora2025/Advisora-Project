@@ -1,21 +1,30 @@
 <div class="container mt-4">
-  <h4 class="mb-4">📅 My Bookings (Accepted Sessions)</h4>
+  <h3 class="mb-4 text-center">My Bookings</h3>
 
-  <div *ngIf="bookings$ | async as bookings">
-    <div *ngIf="bookings.length > 0; else noBookings">
-      <div class="card mb-3" *ngFor="let booking of bookings">
-        <div class="card-body">
-          <p><strong>Client Email:</strong> {{ booking.clientEmail }}</p>
-          <p><strong>Scheduled Time:</strong> {{ booking.availableTime }}</p>
-          <!-- <p><strong>Consultation Rate:</strong> ₹{{ booking.consultationRates }}</p> -->
-          <p><strong>Status:</strong> <span class="text-success">Accepted</span></p>
-          <p><strong>Payment:</strong> <span class="text-warning fw-semibold">Pending</span></p>
-        </div>
-      </div>
-    </div>
-
-    <ng-template #noBookings>
-      <p>No accepted bookings yet.</p>
-    </ng-template>
+  <div *ngIf="sessions.length === 0" class="text-center text-muted">
+    No bookings found.
   </div>
+
+  <table class="table table-bordered table-striped" *ngIf="sessions.length > 0">
+    <thead class="thead-dark">
+      <tr>
+        <th>Client Name</th>
+        <th>Client Email</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Payment status</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let session of sessions">
+         <td>{{ session.clientName }}</td>
+        <td>{{ session.clientEmail }}</td>
+        <td>{{ session.availableDate }}</td>
+        <td>{{ session.availableTime }}</td>
+        <td>{{ session.paymentStatus }}</td>
+        
+      </tr>
+    </tbody>
+  </table>
 </div>

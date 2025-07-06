@@ -1,0 +1,25 @@
+<!-- client.session.html -->
+<div class="container mt-4">
+  <h2 class="mb-3">Book a Session with {{ consultant?.name }}</h2>
+
+  <div *ngIf="consultant; else loading">
+    <div class="mb-2"><strong>Expertise:</strong> {{ consultant.expertise }}</div>
+    <div class="mb-2"><strong>Available:</strong> {{ consultant.availabilityFrom }} to {{ consultant.availabilityTo }}</div>
+
+    <div class="form-group mt-3">
+      <label for="date">Select Date:</label>
+      <input type="date" id="date" class="form-control" [(ngModel)]="selectedDate" />
+    </div>
+
+    <div class="form-group mt-3">
+      <label for="time">Select Time:</label>
+      <input type="time" id="time" class="form-control" [(ngModel)]="selectedTime" />
+    </div>
+
+    <button class="btn btn-success mt-4" (click)="bookSession()">Confirm Booking</button>
+  </div>
+
+  <ng-template #loading>
+    <p>Loading consultant details...</p>
+  </ng-template>
+</div>

@@ -27,6 +27,10 @@ export class AboutConsultant implements OnInit {
   }
 
   bookNow() {
-    this.router.navigate(['/pages/clientsession', this.consultantId]); 
-  }
+    if (this.consultantId) {
+      this.router.navigate(['/pages/clientsesssion', this.consultantId]);
+    } else {
+      console.error('Consultant ID not found');
+    }
+}
 }

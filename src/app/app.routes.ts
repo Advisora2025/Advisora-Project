@@ -14,6 +14,7 @@
 import { AdminGuard } from './Admin/admin.guard';
 import { Consultantdashboard } from './consultant/consultantdashboard/consultantdashboard';
 import { ConsultantSidebar } from './components/consultant-sidebar/consultant-sidebar';
+import { ClientSession } from './pages/client.session/client.session';
   // export const routes: Routes = [];
 
   export const routes: Routes = [
@@ -44,6 +45,7 @@ import { ConsultantSidebar } from './components/consultant-sidebar/consultant-si
     { path: '', redirectTo: 'admin/dashboard', pathMatch: 'full' },
     { path: 'pages/consultentprofile', component: ConsultantProfile },
     { path: 'pages/aboutconsultant/:id', component: AboutConsultant },
+    { path: 'pages/clientsesssion/:id', component: ClientSession },
     
     { 
       path: 'consultant', 

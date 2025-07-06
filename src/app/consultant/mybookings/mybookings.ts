@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Firestore, collection, collectionData, query, where } from '@angular/fire/firestore';
-import { Auth } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { Auth } from '@angular/fire/auth';
+import { Firestore, collection, query, where, getDocs } from '@angular/fire/firestore';
+
 
 @Component({
   selector: 'app-mybookings', 
@@ -12,26 +12,27 @@ import { CommonModule } from '@angular/common';
   styleUrl: './mybookings.css'
 })
 export class Mybookings implements OnInit {
-  bookings$: Observable<any[]> | undefined;
-  consultantUid: string | null = null;
+  sessions: any[] = [];
+  consultantEmail: string = '';
+  consultantUid: string = '';
 
-  constructor(private firestore: Firestore, private auth: Auth) {}
+  constructor(private auth: Auth, private firestore: Firestore) {}
 
-  ngOnInit(): void {
-    this.auth.onAuthStateChanged(user => {
-      if (user) {
-        this.consultantUid = user.uid;
+  async ngOnInit() {
+    const user = this.auth.currentUser;
+    if (!user) return;
 
-        const sessionRef = collection(this.firestore, 'sessions');
-        const acceptedBookingsQuery = query(
-          sessionRef,
-          where('consultantUid', '==', this.consultantUid),
-          where('confirmation', '==', 'accepted')
-        );
+    this.consultantEmail = user.email || '';
+    this.consultantUid = user.uid;
 
-        this.bookings$ = collectionData(acceptedBookingsQuery, { idField: 'id' });
-      }
-    });
+    const sessionsRef = collection(this.firestore, 'sessions');
+
+    const q = query(
+      sessionsRef,
+      where('consultantUid', '==', this.consultantUid)
+    );
+
+    const snapshot = await getDocs(q);
+    this.sessions = snapshot.docs.map(doc => doc.data());
   }
-
 }
