@@ -74,13 +74,13 @@ export class Consultantdashboard implements OnInit {
 
   async uploadCertificate(event: any) {
     const file = event.target.files[0];
-    if (!file || file.type !== 'application/pdf') {
-      alert('Only PDF files are allowed.');
+    if (!file || !file.type.startsWith('image/')) {
+      alert('Only image files are allowed for certificates (e.g., JPG, PNG).');
       return;
     }
 
-    if (file.size > 10 * 1024 * 1024) {
-      alert('PDF file must be less than 10MB.');
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Certificate image size must be less than 5MB.');
       return;
     }
 
@@ -89,9 +89,9 @@ export class Consultantdashboard implements OnInit {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', 'consultant_unsigned');
-    formData.append('folder', 'consultant');
+    formData.append('folder', 'consultant/certificates');
 
-    const res = await fetch('https://api.cloudinary.com/v1_1/dpew5sddn/raw/upload', {
+    const res = await fetch('https://api.cloudinary.com/v1_1/dpew5sddn/image/upload', {
       method: 'POST',
       body: formData
     });
@@ -134,7 +134,6 @@ export class Consultantdashboard implements OnInit {
 
   logout() {
     this.auth.signOut();
-    this.router.navigate(['/']);
+    this.router.navigate(['home']);
   }
 }
-

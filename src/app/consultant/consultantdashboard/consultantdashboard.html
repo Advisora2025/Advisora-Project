@@ -1,7 +1,4 @@
-<!-- consultantdashboard.html -->
 <div class="d-flex flex-column flex-md-row min-vh-100 bg-light">
- 
-
   <!-- Dashboard View -->
   <div class="flex-grow-1 p-4" *ngIf="!editProfile && consultantData">
     <div class="text-center mb-4">
@@ -11,14 +8,19 @@
       <p><strong>Expertise:</strong> {{ consultantData.expertise }}</p>
       <p><strong>Availability:</strong> {{ consultantData.availabilityFrom }} to {{ consultantData.availabilityTo }}</p>
       <p><strong>Consultation Rates:</strong> ₹{{ consultantData.consultationRates }}</p>
+      <div *ngIf="consultantData.certificateUrl">
+        <img [src]="consultantData.certificateUrl" alt="Certificate Image" class="img-fluid mb-2" style="max-height: 200px;" />
+      </div>
       <button class="btn btn-outline-secondary" (click)="viewCertificate()">📄 View Certificate</button>
+    </div>
+    <div class="text-end mb-4">
+      <button class="btn btn-outline-primary" (click)="editProfile = true">✏️ Edit Profile</button>
     </div>
   </div>
 
   <!-- Edit Profile Form -->
   <div class="flex-grow-1 p-4" *ngIf="editProfile">
     <form #profileForm="ngForm" (ngSubmit)="saveProfile()">
-      <!-- Basic Fields -->
       <div class="mb-3"><label>Name</label><input class="form-control" [(ngModel)]="consultantData.name" name="name" required readonly /></div>
       <div class="mb-3"><label>Email</label><input class="form-control" [(ngModel)]="consultantData.email" name="email" required readonly /></div>
       <div class="mb-3"><label>Phone</label><input class="form-control" [(ngModel)]="consultantData.phone" name="phone" required readonly /></div>
@@ -27,17 +29,15 @@
       <div class="mb-3"><label>Availability From</label><input type="datetime-local" class="form-control" [(ngModel)]="consultantData.availabilityFrom" name="availabilityFrom" required /></div>
       <div class="mb-3"><label>Availability To</label><input type="datetime-local" class="form-control" [(ngModel)]="consultantData.availabilityTo" name="availabilityTo" required /></div>
 
-      <!-- Image Upload -->
       <div class="mb-3">
         <label>Profile Image</label>
         <input type="file" class="form-control" (change)="uploadImage($event)" accept="image/*" required />
         <div *ngIf="uploadingImage">Uploading image...</div>
       </div>
 
-      <!-- Certificate Upload -->
       <div class="mb-3">
-        <label>Degree Certificate (PDF)</label>
-        <input type="file" class="form-control" (change)="uploadCertificate($event)" accept="application/pdf" required />
+        <label>Degree Certificate (Image)</label>
+        <input type="file" class="form-control" (change)="uploadCertificate($event)" accept="image/*" required />
         <div *ngIf="uploadingCertificate">Uploading certificate...</div>
       </div>
 

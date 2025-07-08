@@ -1,36 +1,65 @@
-<div class="container">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-4 shadow-sm">
+  <div class="container-fluid">
+    <span class="navbar-brand fw-bold">MIND VISTA</span>
+    <div class="ms-auto">
+      <button class="btn btn-outline-primary me-2" (click)="openSessionModal()">My Sessions</button>
+      <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container mt-4">
   <h2 class="text-center my-4">Our Expert Consultants</h2>
 
-  <!-- Loading indicator -->
   <div *ngIf="consultants.length === 0" class="text-center text-muted">
     <p>Loading consultants...</p>
   </div>
 
-  <!-- Consultant Cards -->
   <div class="row">
     <div class="col-md-4 mb-4" *ngFor="let consultant of consultants">
       <div class="card h-100 shadow">
-        <!-- Consultant Image -->
         <img
           [src]="consultant.imageUrl || 'assets/default-profile.png'"
           class="card-img-top"
           alt="{{ consultant.name }}"
           style="height: 250px; object-fit: cover;"
         />
-
         <div class="card-body text-center">
-          <!-- Consultant Name -->
           <h5 class="card-title">{{ consultant.name }}</h5>
-
-          <!-- Consultant Expertise -->
           <p class="text-muted mb-2">{{ consultant.expertise }}</p>
+          <button class="btn btn-primary mt-2" (click)="viewAbout(consultant.id)">About Us</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-          <!-- About Button -->
-          <button
-            class="btn btn-primary mt-2"
-            (click)="viewAbout(consultant.id)">
-            About Us
-          </button>
+<!-- Session Modal -->
+<div class="modal fade" id="sessionModal" tabindex="-1" aria-labelledby="sessionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">My Booked Sessions</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="sessions.length === 0" class="text-muted text-center">No sessions found.</div>
+        <div *ngFor="let session of sessions" class="border rounded p-3 mb-2 shadow-sm">
+          <p><strong>Client Name:</strong> {{ session.clientName }}</p>
+          <p><strong>Scheduled At:</strong></p>
+          <p>{{ session.availableDate }} - {{ session.availableTime }}</p>
+          <p><strong>Payment Status:</strong>
+  <span [ngClass]="{
+    'text-success': session.paymentStatus === 'success',
+    'text-danger': session.paymentStatus === 'pending'
+  }">
+    {{ session.paymentStatus }}
+  </span>
+</p>
+
+
         </div>
       </div>
     </div>

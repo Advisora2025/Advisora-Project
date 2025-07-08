@@ -6,13 +6,12 @@
 
   import { AdminNavbar } from './components/admin.navbar/admin.navbar';
   import { ClientDashboard } from './pages/clientdashboard/clientdashboard'
-  import { ConsultantProfile } from './pages/consultentprofile/consultentprofile';
+  import { ConsultentProfile } from './pages/consultentprofile/consultentprofile';
   import { AboutConsultant } from './pages/aboutconsultant/aboutconsultant';
-  import {ConsultentDashboard  } from './pages/consultentdashboard/consultentdashboard';
 
   import { EditProfile } from './Admin/edit-profile/edit-profile';
 import { AdminGuard } from './Admin/admin.guard';
-import { Consultantdashboard } from './consultant/consultantdashboard/consultantdashboard';
+
 import { ConsultantSidebar } from './components/consultant-sidebar/consultant-sidebar';
 import { ClientSession } from './pages/client.session/client.session';
   // export const routes: Routes = [];
@@ -43,7 +42,7 @@ import { ClientSession } from './pages/client.session/client.session';
       
     },
     { path: '', redirectTo: 'admin/dashboard', pathMatch: 'full' },
-    { path: 'pages/consultentprofile', component: ConsultantProfile },
+    { path: 'pages/consultentprofile', component: ConsultentProfile },
     { path: 'pages/aboutconsultant/:id', component: AboutConsultant },
     { path: 'pages/clientsesssion/:id', component: ClientSession },
     
