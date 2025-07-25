@@ -1,0 +1,33 @@
+.time-slots-container {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+/* Custom scrollbar */
+.time-slots-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.time-slots-container::-webkit-scrollbar-track {
+  background: #333;
+  border-radius: 10px;
+}
+
+.time-slots-container::-webkit-scrollbar-thumb {
+  background: #ffc107;
+  border-radius: 10px;
+}
+
+.time-slots-container::-webkit-scrollbar-thumb:hover {
+  background: #e0a800;
+}
+
+.time-slot-btn {
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.time-slot-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

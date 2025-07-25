@@ -1,53 +1,188 @@
-<div class="d-flex flex-column flex-md-row min-vh-100 bg-light">
+
+<div class="d-flex flex-column flex-md-row min-vh-100 bg-black text-white">
   <!-- Dashboard View -->
   <div class="flex-grow-1 p-4" *ngIf="!editProfile && consultantData">
-    <div class="text-center mb-4">
-      <h2>Welcome, {{ consultantData.name }}</h2>
-      <img [src]="consultantData.imageUrl" alt="Profile Image" class="rounded-circle mb-2" width="150" height="150">
-      <p>{{ consultantData.bio }}</p>
-      <p><strong>Expertise:</strong> {{ consultantData.expertise }}</p>
-      <p><strong>Availability:</strong> {{ consultantData.availabilityFrom }} to {{ consultantData.availabilityTo }}</p>
-      <p><strong>Consultation Rates:</strong> ₹{{ consultantData.consultationRates }}</p>
-      <div *ngIf="consultantData.certificateUrl">
-        <img [src]="consultantData.certificateUrl" alt="Certificate Image" class="img-fluid mb-2" style="max-height: 200px;" />
-      </div>
-      <button class="btn btn-outline-secondary" (click)="viewCertificate()">📄 View Certificate</button>
+    <div class="text-center mb-4 border border-warning rounded-4 shadow-lg p-4 bg-dark fire-glow">
+      <h2 class="fw-bold text-warning"> Welcome, <br>{{ consultantData.name }}</h2>
+      <img [src]="consultantData.imageUrl" alt="Profile Image"
+        class="rounded-circle shadow mb-3 border border-warning border-3" width="150" height="150" />
+
+      <p><strong>🧠 Expertise:</strong><b style="text-transform: uppercase;">   {{ consultantData.expertise }}</b></p>
+      <p class="lead">{{ consultantData.bio }}</p>
+
+
+      <!-- <p><strong>📅 Available On:</strong> {{ consultantData.availableDates?.join(', ') || 'Not set' }}</p> -->
+      <p>
+        <strong>📅 Available On:</strong>
+        <button class="btn btn-sm btn-outline-warning ms-2" (click)="showDatesPopup = true">
+          📆 View Dates
+        </button>
+      </p>
+
+      <p><strong>🕓 Working hour:</strong> From {{ consultantData.availabilityFromTime }} to {{
+        consultantData.availabilityToTime }}</p>
+      <p><strong>💰 Consultation Rates:</strong> ₹{{ consultantData.consultationRates }}</p>
+
+      <!-- <div *ngIf="consultantData.certificateUrl" class="mb-3">
+        <img [src]="consultantData.certificateUrl" alt="Certificate" class="img-fluid rounded border border-warning"
+          style="max-height: 200px;" />
+      </div> -->
+
+      <button class="btn btn-warning fw-bold px-4" (click)="viewCertificate()">📄 View Certificate</button>
     </div>
-    <div class="text-end mb-4">
-      <button class="btn btn-outline-primary" (click)="editProfile = true">✏️ Edit Profile</button>
+    <div class="text-end">
+      <button class="btn btn-outline-warning fw-bold px-4" (click)="editProfile = true">✏️ Edit Profile</button>
     </div>
   </div>
 
   <!-- Edit Profile Form -->
   <div class="flex-grow-1 p-4" *ngIf="editProfile">
-    <form #profileForm="ngForm" (ngSubmit)="saveProfile()">
-      <div class="mb-3"><label>Name</label><input class="form-control" [(ngModel)]="consultantData.name" name="name" required readonly /></div>
-      <div class="mb-3"><label>Email</label><input class="form-control" [(ngModel)]="consultantData.email" name="email" required readonly /></div>
-      <div class="mb-3"><label>Phone</label><input class="form-control" [(ngModel)]="consultantData.phone" name="phone" required readonly /></div>
-      <div class="mb-3"><label>Bio</label><textarea class="form-control" [(ngModel)]="consultantData.bio" name="bio" required></textarea></div>
-      <div class="mb-3"><label>Expertise</label><input class="form-control" [(ngModel)]="consultantData.expertise" name="expertise" required /></div>
-      <div class="mb-3"><label>Availability From</label><input type="datetime-local" class="form-control" [(ngModel)]="consultantData.availabilityFrom" name="availabilityFrom" required /></div>
-      <div class="mb-3"><label>Availability To</label><input type="datetime-local" class="form-control" [(ngModel)]="consultantData.availabilityTo" name="availabilityTo" required /></div>
+    <form #profileForm="ngForm" (ngSubmit)="saveProfile()"
+      class="bg-dark border border-warning rounded-4 shadow-lg p-4">
+      <h4 class="text-warning text-center mb-4 fw-bold">🛠️ Edit Your Profile</h4>
 
       <div class="mb-3">
-        <label>Profile Image</label>
-        <input type="file" class="form-control" (change)="uploadImage($event)" accept="image/*" required />
-        <div *ngIf="uploadingImage">Uploading image...</div>
+        <label class="form-label text-white">Name</label>
+        <input class="form-control bg-black text-white border-warning" [(ngModel)]="consultantData.name" name="name"
+          required readonly />
       </div>
 
       <div class="mb-3">
-        <label>Degree Certificate (Image)</label>
-        <input type="file" class="form-control" (change)="uploadCertificate($event)" accept="image/*" required />
-        <div *ngIf="uploadingCertificate">Uploading certificate...</div>
+        <label class="form-label text-white">Email</label>
+        <input class="form-control bg-black text-white border-warning" [(ngModel)]="consultantData.email" name="email"
+          required readonly />
       </div>
 
       <div class="mb-3">
-        <label>Consultation Rates (₹)</label>
-        <input type="number" class="form-control" [(ngModel)]="consultantData.consultationRates" name="consultationRates" required />
+        <label class="form-label text-white">Phone</label>
+        <input class="form-control bg-black text-white border-warning" [(ngModel)]="consultantData.phone" name="phone"
+          required readonly />
       </div>
 
-      <button class="btn btn-success" type="submit">💾 Save</button>
-      <button class="btn btn-secondary ms-2" type="button" (click)="cancelEdit()">Cancel</button>
+      <div class="mb-3">
+        <label class="form-label text-white">Bio</label>
+        <textarea class="form-control bg-black text-white border-warning" [(ngModel)]="consultantData.bio" name="bio"
+          required></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label text-white">Expertise</label>
+        <input class="form-control bg-black text-white border-warning" [(ngModel)]="consultantData.expertise"
+          name="expertise" required />
+      </div>
+
+      <!-- <div class="mb-3">
+        <label class="form-label text-white">Available Dates</label>
+        <input type="date" class="form-control bg-black text-white border-warning"
+          (change)="addAvailableDate($event)" />
+        <div class="mt-2">
+          <span *ngFor="let date of consultantData.availableDates" class="badge bg-warning text-dark me-1">
+            {{ date }}
+            <button type="button" class="btn-close btn-close-white btn-sm ms-1" (click)="removeDate(date)"></button>
+          </span>
+        </div>
+      </div> -->
+
+      <div class="mb-3">
+  <label class="form-label text-white">Available Dates</label>
+
+  <input
+    type="date"
+    class="form-control bg-black text-white border-warning"
+    [(ngModel)]="newAvailableDate"
+    name="newAvailableDate"
+    
+  />
+
+  <button type="button" class="btn btn-sm btn-warning mt-2" (click)="addAvailableDate()">
+    ➕ Add Date
+  </button>
+
+  <div *ngIf="dateWarning" class="text-warning mt-2">{{ dateWarning }}</div>
+
+  <div class="mt-2">
+    <span
+      *ngFor="let date of consultantData.availableDates.slice().sort()"
+      class="badge bg-warning text-dark me-1"
+    >
+      {{ formatDateDisplay(date) }}
+      <button
+        type="button"
+        class="btn-close btn-close-white btn-sm ms-1"
+        (click)="removeDate(date)"
+      ></button>
+    </span>
+  </div>
+  <div *ngIf="dateRemoveWarning" class="text-danger mt-2">
+  {{ dateRemoveWarning }}
+</div>
+</div>
+
+
+      <div class="mb-3">
+        <label class="form-label text-white">Availability From Time </label>
+        <input type="time" class="form-control bg-black text-white border-warning"
+          [(ngModel)]="consultantData.availabilityFromTime" name="availabilityFromTime" required  step="1800" />
+          <small class="text-warning">Format: HH:mm (24-hour, e.g., 09:00, 13:30)</small>
+      </div>
+
+      <div class="mb-3">  
+        <label class="form-label text-white">Availability To Time (e.g. 18:00)</label>
+        <input type="time" class="form-control bg-black text-white border-warning"
+          [(ngModel)]="consultantData.availabilityToTime" name="availabilityToTime" required   step="1800"/>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label text-white">Profile Image</label>
+        <input type="file" class="form-control bg-black text-white border-warning" (change)="uploadImage($event)"
+          accept="image/*" required />
+        <div *ngIf="uploadingImage" class="text-warning mt-1">Uploading image...</div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label text-white">Degree Certificate (Image)</label>
+        <input type="file" class="form-control bg-black text-white border-warning" (change)="uploadCertificate($event)"
+          accept="image/*" required />
+        <div *ngIf="uploadingCertificate" class="text-warning mt-1">Uploading certificate...</div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label text-white">Consultation Rates (₹)</label>
+        <input type="number" class="form-control bg-black text-white border-warning"
+          [(ngModel)]="consultantData.consultationRates" name="consultationRates" required />
+      </div>
+
+      <div class="d-flex justify-content-between mt-4">
+        <button class="btn btn-warning fw-bold px-4" type="submit">💾 Save</button>
+        <button class="btn btn-outline-light fw-bold px-4" type="button" (click)="cancelEdit()">❌ Cancel</button>
+      </div>
     </form>
   </div>
 </div>
+
+<div *ngIf="showDatesPopup" class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-black bg-opacity-75 z-3">
+  <div class="bg-dark text-white border border-warning rounded-4 shadow-lg p-4" style="min-width: 300px; max-width: 500px;">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="text-warning m-0">📅 Available Dates</h5>
+      <button class="btn btn-sm btn-close btn-close-white" (click)="showDatesPopup = false"></button>
+    </div>
+    
+    <div *ngIf="consultantData.availableDates?.length > 0; else noDates">
+      <ul class="list-group list-group-flush">
+        <li *ngFor="let date of consultantData.availableDates.slice().sort()" class="list-group-item bg-dark text-white border-0">
+          {{ formatDateDisplay(date) }}
+        </li>
+      </ul>
+    </div>
+
+    <ng-template #noDates>
+      <p class="text-warning">No dates available.</p>
+    </ng-template>
+  </div>
+</div>
+
+
+
+
+
+

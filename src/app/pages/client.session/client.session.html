@@ -1,44 +1,38 @@
-<!-- client.session.html -->
-<div class="container mt-5 p-4 shadow-lg bg-light rounded" style="max-width: 720px;">
-  <h2 class="mb-4 text-center text-primary">
-    Book a Session with <span class="text-dark">{{ consultant?.name }}</span>
+<!-- 
+ 
+<div class="container mt-5 p-4 shadow-lg bg-black text-white rounded" style="max-width: 720px;">
+  <h2 class="mb-4 text-center text-warning fw-bold">
+    Book a Session with <br><span class="text-white">{{ consultant?.name }}</span>
   </h2>
 
   <div *ngIf="consultant; else loading">
     <div class="mb-3">
-      <strong>Expertise:</strong>
+      <strong class="text-light">🧠 Expertise:</strong>
       <span class="text-info">{{ consultant.expertise }}</span>
     </div>
 
     <div class="mb-3">
-      <strong>Available:</strong>
-      <span class="text-success">
-        {{ consultant.availabilityFrom }} to {{ consultant.availabilityTo }},<br>
-        {{ consultant.availabilityFromTime }} - {{ consultant.availabilityToTime }}
-      </span>
+      <strong class="text-light">📅 Available Dates:</strong>
+      <span class="text-success">{{ consultant.availableDates?.join(', ') || 'Not set' }}</span><br>
+      <strong class="text-light">🕒 Time:</strong>
+      <span class="text-success">{{ consultant.availabilityFromTime }} - {{ consultant.availabilityToTime }}</span>
     </div>
 
-    <!-- Date Picker -->
+   
     <div class="form-group mt-4">
-      <label for="date">Select Date:</label>
-      <input
-        type="date"
-        id="date"
-        class="form-control"
-        [(ngModel)]="selectedDate"
-        [min]="consultant.availabilityFrom"
-        [max]="consultant.availabilityTo"
-        required
-      />
+      <label for="date" class="form-label text-white">📆 Select Date:</label>
+      <select class="form-control bg-black text-white border-warning" [(ngModel)]="selectedDate" required>
+        <option value="" disabled selected>Select a date</option>
+        <option *ngFor="let date of consultant.availableDates" [value]="date">{{ date }}</option>
+      </select>
     </div>
 
-    <!-- Time Picker -->
     <div class="form-group mt-3">
-      <label for="time">Select Time:</label>
+      <label for="time" class="form-label text-white">⏰ Select Time:</label>
       <input
         type="time"
         id="time"
-        class="form-control"
+        class="form-control bg-black text-white border-warning"
         [(ngModel)]="selectedTime"
         [min]="consultant.availabilityFromTime"
         [max]="consultant.availabilityToTime"
@@ -46,13 +40,109 @@
       />
     </div>
 
-    <button class="btn btn-success mt-4 w-100" (click)="bookSession()">Confirm Booking</button>
+    <button class="btn btn-warning fw-bold mt-4 w-100" (click)="bookSession()">💳 Confirm Booking</button>
   </div>
 
   <ng-template #loading>
     <div class="text-center mt-5 text-muted">
-      <div class="spinner-border text-primary mb-2" role="status"></div>
+      <div class="spinner-border text-warning mb-2" role="status"></div>
       <p>Loading consultant details...</p>
     </div>
   </ng-template>
 </div>
+
+ -->
+
+
+ <div class="container mt-5 p-4 shadow-lg bg-black text-white rounded" style="max-width: 720px;">
+  <h2 class="mb-4 text-center text-warning fw-bold">
+    Book a Session with <br><span class="text-white">{{ consultant?.name }}</span>
+  </h2>
+
+  <div *ngIf="consultant; else loading">
+    <div class="mb-3">
+      <strong class="text-light">🧠 Expertise:</strong>
+      <span class="text-info">{{ consultant.expertise }}</span>
+    </div>
+
+    <div class="mb-3">
+      <strong class="text-light">💰 Consultation Fee:</strong>
+      <span class="text-success">₹{{ consultant.consultationRates }}</span>
+    </div>
+
+    <div class="form-group mt-4">
+      <label for="date" class="form-label text-white">📆 Select Date:</label>
+      <select 
+        class="form-control bg-black text-white border-warning mb-3" 
+        [(ngModel)]="selectedDate" 
+        (change)="onDateChange()"
+        required>
+        <option value="" disabled selected>Select a date</option>
+        <option *ngFor="let date of consultant.availableDates" [value]="date">{{ date }}</option>
+      </select>
+    </div>
+
+    <div *ngIf="selectedDate" class="mt-3">
+      <h5 class="text-warning mb-3">Available Time Slots:</h5>
+      
+      
+      <!-- <div class="time-slots-container mb-4">
+        <div *ngFor="let slot of timeSlots" class="time-slot mb-2">
+          <button 
+            class="btn btn-sm w-100 text-start px-2 py-1"
+            [class.btn-outline-warning]="slot.available"
+            [class.btn-outline-secondary]="!slot.available"
+            [disabled]="!slot.available"
+            (click)="selectSlot(slot)">
+            <div class="d-flex justify-content-between align-items-center small">
+              <span>{{ slot.display }}</span>
+              <span *ngIf="!slot.available" class="badge bg-danger">Booked</span>
+              <span *ngIf="slot.available && selectedTime === slot.time24" class="badge bg-success">Selected</span>
+            </div>
+          </button>
+        </div>
+      </div> -->
+        <div class="time-slots-container mb-4">
+  <div *ngFor="let slot of timeSlots" class="time-slot">
+    <button 
+      class="btn btn-sm w-100 text-start px-2 py-1 time-slot-btn"
+      [class.bg-warning]="selectedTime === slot.time24"
+      [class.text-dark]="selectedTime === slot.time24"
+      [class.bg-dark]="selectedTime !== slot.time24"
+      [class.text-white]="selectedTime !== slot.time24"
+      [class.border-warning]="slot.available"
+      [class.border-secondary]="!slot.available"
+      [disabled]="!slot.available"
+      (click)="selectSlot(slot)">
+      <div class="d-flex justify-content-between align-items-center small">
+        <span>{{ slot.display }}</span>
+        <span *ngIf="!slot.available" class="badge bg-danger">Booked</span>
+      </div>
+    </button>
+  </div>
+</div>
+
+      
+      <button 
+        class="btn btn-warning w-100 fw-bold py-2"
+        [disabled]="!selectedTime"
+        (click)="bookSession()">
+        Book Now for ₹{{ consultant.consultationRates }}
+      </button>
+    </div>
+
+    <div *ngIf="selectedDate && timeSlots.length === 0" class="alert alert-info mt-3">
+      No available time slots for this date. Please choose another date.
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <div class="text-center mt-5 text-muted">
+      <div class="spinner-border text-warning mb-2" role="status"></div>
+      <p>Loading consultant details...</p>
+    </div>
+  </ng-template>
+</div>
+
+
+

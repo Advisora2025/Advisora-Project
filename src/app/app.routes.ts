@@ -9,7 +9,7 @@
   import { ConsultentProfile } from './pages/consultentprofile/consultentprofile';
   import { AboutConsultant } from './pages/aboutconsultant/aboutconsultant';
 
-  import { EditProfile } from './Admin/edit-profile/edit-profile';
+  
 import { AdminGuard } from './Admin/admin.guard';
 
 import { ConsultantSidebar } from './components/consultant-sidebar/consultant-sidebar';
@@ -31,7 +31,7 @@ import { ClientSession } from './pages/client.session/client.session';
       loadComponent: () =>
       import('./auth/register/register').then((m) => m.Register),
     },
-    { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
+    { path: 'auth', loadChildren: () => import('./auth/auth-routing-module').then(m => m.AuthRoutingModule) },
     // { path: 'admin/dashboard', component: Dashboard },
     
     {

@@ -29,7 +29,8 @@ export class ConsultentProfile implements OnInit {
 
   loadConsultants() {
     const colRef = collection(this.firestore, 'consultants');
-    getDocs(colRef).then(snapshot => {
+    const acceptedQuery = query(colRef, where('status', '==', 'accepted'));
+    getDocs(acceptedQuery).then(snapshot => {
       this.consultants = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()

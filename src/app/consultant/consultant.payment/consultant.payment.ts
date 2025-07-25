@@ -51,7 +51,7 @@ export class ConsultantPayment implements OnInit {
   keySecret = '';
   editable = false;
   isLoading = true;
-
+  showSecret: boolean = false;
   constructor(private firestore: Firestore, private auth: Auth) {}
 
   async ngOnInit() {
@@ -90,4 +90,8 @@ export class ConsultantPayment implements OnInit {
   enableEdit() {
     this.editable = true;
   }
+
+  toggleSecretVisibility() {
+  this.showSecret = !this.showSecret;
+}
 }
