@@ -12,28 +12,26 @@
 <!-- Main Content -->
 <div class="container mt-4">
   <h2 class="text-center my-4">Our Expert Consultants</h2>
-    <!-- <div *ngIf="hasPendingPayment" class="alert alert-warning text-center">
-      ⚠️ You have a session with pending payment. Please complete your payment.
-    </div> -->
-    <div 
-        *ngIf="hasPendingPayment" 
-        class="alert alert-warning d-flex justify-content-between align-items-center py-2 px-3 shadow-sm" 
-        style="cursor: pointer; border-radius: 0.5rem;" 
-        (click)="openSessionModal()"
-    >
-        <div class="flex-grow-1 text-start small">
-          ⚠️ You have a session with pending payment, Please complete your payment.<br class="d-none d-md-block" />
-          
-        </div>
-      
-        <button  
-          type="button" 
-          class="btn-close ms-3" 
-          aria-label="Close" 
-          (click)="dismissPendingPayment($event)">
-        </button>
-    </div>
 
+  <!-- Pending Payment Alert -->
+  <div 
+    *ngIf="hasPendingPayment" 
+    class="alert alert-warning d-flex justify-content-between align-items-center py-2 px-3 shadow-sm" 
+    style="cursor: pointer; border-radius: 0.5rem;" 
+    (click)="openSessionModal()"
+  >
+    <div class="flex-grow-1 text-start small">
+      ⚠️ You have a session with pending payment. Please complete your payment.
+    </div>
+    <button  
+      type="button" 
+      class="btn-close ms-3" 
+      aria-label="Close" 
+      (click)="dismissPendingPayment($event)">
+    </button>
+  </div>
+
+  <!-- Consultants -->
   <div *ngIf="consultants.length === 0" class="text-center text-muted">
     <p>Loading consultants...</p>
   </div>
@@ -67,46 +65,23 @@
       </div>
       <div class="modal-body">
         <div *ngIf="sessions.length === 0" class="text-muted text-center">No sessions found.</div>
-        <!-- <div *ngFor="let session of sessions" class="border rounded p-3 mb-2 shadow-sm">
-          <p><strong>Client Name:</strong> {{ session.clientName }}</p>
-          <p><strong>Scheduled At:</strong></p>
-          <p>{{ session.availableDate }} - {{ session.availableTime }}</p>
-          <p><strong>Payment Status:</strong>
-              <span [ngClass]="{
-                'text-success': session.paymentStatus === 'success',
-                'text-danger': session.paymentStatus === 'pending'
-              }">
-                {{ session.paymentStatus }}
-              </span>
-            </p>
-          
-        </div> -->
-        <div *ngFor="let session of sessions" class="border rounded p-3 mb-2 shadow-sm">
-            <div class="d-flex justify-content-between align-items-center">
-              <p><strong>Client Name:</strong> {{ session.clientName }}</p>
-              <span *ngIf="session.isNearestUpcoming" class="badge bg-success">Next Upcoming</span>
-            </div>
 
-            <p><strong>Scheduled On:</strong>
-            <p>{{ session.availableDate }}  at {{ session.availableTime }}</p>
+        <div *ngFor="let session of sessions" class="border rounded p-3 mb-3 shadow-sm">
+          <div class="d-flex justify-content-between align-items-center">
+            <p><strong>Client Name:</strong> {{ session.clientName }}</p>
+            <span *ngIf="session.isNearestUpcoming" class="badge bg-success">Next Upcoming</span>
+          </div>
 
-            <!-- <p><strong>Payment Status:</strong>
-              <span [ngClass]="{
-                'text-success': session.paymentStatus === 'success',
-                'text-danger': session.paymentStatus === 'pending'
-              }">
-                {{ session.paymentStatus }}
-              </span>
-            </p> -->
-            <p><strong>Payment Status:</strong>
+          <p><strong>Scheduled On:</strong> {{ session.availableDate }} at {{ session.availableTime }}</p>
+
+          <p>
+            <strong>Payment Status:</strong>
             <span [ngClass]="{
               'text-success': session.paymentStatus === 'success',
               'text-danger': session.paymentStatus === 'pending'
             }">
               {{ session.paymentStatus }}
             </span>
-
-            <!-- Pay Now button for pending -->
             <button 
               *ngIf="session.paymentStatus === 'pending'" 
               class="btn btn-sm btn-outline-danger ms-3"
@@ -114,7 +89,23 @@
               Pay Now
             </button>
           </p>
-        </div>  
+
+          <div *ngIf="session.isNearestUpcoming">
+            <div *ngIf="session.paymentStatus === 'success'" class="mb-2 text-primary fw-bold">
+              ⏳ Starts in: {{ session.countdown?.hours }}h {{ session.countdown?.minutes }}m {{ session.countdown?.seconds }}s
+            </div>
+            <div *ngIf="session.paymentStatus === 'pending'" class="mb-2 text-danger">
+              ⚠️ Payment pending — Join will not be enabled.
+            </div>
+
+            <button 
+              class="btn btn-success" 
+              [disabled]="!session.isJoinEnabled || session.paymentStatus !== 'success'" 
+              (click)="joinSession(session)">
+              Join Now
+            </button>
+          </div>
+        </div>
 
       </div>
     </div>

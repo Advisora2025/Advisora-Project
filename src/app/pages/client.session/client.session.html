@@ -1,7 +1,6 @@
-
- <div class="container mt-5 p-4 shadow-lg bg-black text-white rounded" style="max-width: 720px;">
+<div class="container mt-5 p-4 shadow-lg bg-black text-white rounded" style="max-width: 720px;">
   <h2 class="mb-4 text-center text-warning fw-bold">
-    Book a Session with <br><span class="text-white">{{ consultant?.name }}</span>
+    Book a Session with <br /><span class="text-white">{{ consultant?.name }}</span>
   </h2>
 
   <div *ngIf="consultant; else loading">
@@ -17,59 +16,61 @@
 
     <div class="form-group mt-4">
       <label for="date" class="form-label text-white">📆 Select Date:</label>
-      <select 
-        class="form-control bg-black text-white border-warning mb-3" 
-        [(ngModel)]="selectedDate" 
+      <select
+        class="form-control bg-black text-white border-warning mb-3"
+        [(ngModel)]="selectedDate"
         (change)="onDateChange()"
-        required>
+        required
+      >
         <option value="" disabled selected>Select a date</option>
-        <option *ngFor="let date of consultant.availableDates" [value]="date">{{ date }}</option>
+        <option
+          *ngFor="let date of consultant.availableDates"
+          [value]="date"
+        >
+          {{ date }}
+        </option>
       </select>
     </div>
 
-    <div *ngIf="selectedDate" class="mt-3">
+    <div *ngIf="selectedDate">
       <h5 class="text-warning mb-3">Available Time Slots:</h5>
-      
-      
-      
-        <div class="time-slots-container mb-4">
-  <div *ngFor="let slot of timeSlots" class="time-slot">
-    <button 
-      class="btn btn-sm w-100 text-start px-2 py-1 time-slot-btn"
-      [class.bg-warning]="selectedTime === slot.time24"
-      [class.text-dark]="selectedTime === slot.time24"
-      [class.bg-dark]="selectedTime !== slot.time24"
-      [class.text-white]="selectedTime !== slot.time24"
-      [class.border-warning]="slot.available"
-      [class.border-secondary]="!slot.available"
-      [disabled]="!slot.available"
-      (click)="selectSlot(slot)">
-      <div class="d-flex justify-content-between align-items-center small">
-        <span>{{ slot.display }}</span>
-        <span *ngIf="!slot.available" class="badge bg-danger">Booked</span>
+
+      <div class="time-slots-container mb-4">
+        <div
+          *ngFor="let slot of timeSlots"
+          class="time-slot mb-2"
+        >
+          <button
+            class="btn btn-sm w-100 text-start px-2 py-1 time-slot-btn"
+            [class.bg-warning]="selectedSlot === slot"
+            [class.text-dark]="selectedSlot === slot"
+            [class.bg-dark]="selectedSlot !== slot"
+            [class.text-white]="selectedSlot !== slot"
+            [class.border-warning]="slot.available"
+            [class.border-secondary]="!slot.available"
+            [disabled]="!slot.available"
+            (click)="selectSlot(slot)"
+          >
+            <div class="d-flex justify-content-between align-items-center small">
+              <span>{{ slot.display }}</span>
+              <span *ngIf="!slot.available" class="badge bg-danger">Booked</span>
+            </div>
+          </button>
+        </div>
       </div>
-    </button>
-  </div>
-</div>
 
-      
-      <!-- <button 
+      <button
         class="btn btn-warning w-100 fw-bold py-2"
-        [disabled]="!selectedTime"
-        (click)="bookSession()">
-        Book Now for ₹{{ consultant.consultationRates }}
-      </button> -->
-      <button 
-          class="btn btn-warning w-100 fw-bold py-2"
-          [disabled]="!selectedTime"
-          data-bs-toggle="modal"
-          data-bs-target="#paymentOptionModal">
-          Book Session
+        [disabled]="!selectedSlot"
+        data-bs-toggle="modal"
+        data-bs-target="#paymentOptionModal"
+      >
+        Book Session
       </button>
-    </div>
 
-    <div *ngIf="selectedDate && timeSlots.length === 0" class="alert alert-info mt-3">
-      No available time slots for this date. Please choose another date.
+      <div *ngIf="selectedDate && timeSlots.length === 0" class="alert alert-info mt-3">
+        No available time slots for this date. Please choose another date.
+      </div>
     </div>
   </div>
 
@@ -81,19 +82,43 @@
   </ng-template>
 </div>
 
-
-
-<div class="modal fade" id="paymentOptionModal" tabindex="-1" aria-labelledby="paymentOptionModalLabel" aria-hidden="true">
+<!-- Payment Option Modal -->
+<div
+  class="modal fade"
+  id="paymentOptionModal"
+  tabindex="-1"
+  aria-labelledby="paymentOptionModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content bg-dark text-white border border-warning">
       <div class="modal-header">
-        <h5 class="modal-title text-warning" id="paymentOptionModalLabel">Choose Payment Option</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="text-warning modal-title" id="paymentOptionModalLabel">
+          Choose Payment Option
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body text-center">
         <p>Would you like to pay now or pay later?</p>
-        <button class="btn btn-success fw-bold me-2" (click)="confirmBooking(false)" data-bs-dismiss="modal">💳 Pay Now</button>
-        <button class="btn btn-outline-warning fw-bold" (click)="confirmBooking(true)" data-bs-dismiss="modal">🕒 Pay Later</button>
+        <button
+          class="btn btn-success fw-bold me-2"
+          (click)="confirmBooking(false)"
+          data-bs-dismiss="modal"
+        >
+          💳 Pay Now
+        </button>
+        <button
+          class="btn btn-outline-warning fw-bold"
+          (click)="confirmBooking(true)"
+          data-bs-dismiss="modal"
+        >
+          🕒 Pay Later
+        </button>
       </div>
     </div>
   </div>

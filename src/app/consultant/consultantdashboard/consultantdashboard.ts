@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
-import { Firestore, doc, setDoc, getDoc, collection, query, where, getDocs} from '@angular/fire/firestore';
+import { Firestore, doc, setDoc, getDoc, collection, query, where, getDocs } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-consultantdashboard',
@@ -40,73 +40,63 @@ export class Consultantdashboard implements OnInit {
   constructor(private auth: Auth, private firestore: Firestore, private router: Router) {}
 
   async ngOnInit() {
-    const user = this.auth.currentUser;
-    if (user) {
-      this.userId = user.uid;
-      this.consultantData.name = user.displayName || '';
-      this.consultantData.email = user.email || '';
-      this.consultantData.phone = user.phoneNumber || '';
+    this.auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        this.userId = user.uid;
+        this.consultantData.name = user.displayName || '';
+        this.consultantData.email = user.email || '';
+        this.consultantData.phone = user.phoneNumber || '';
 
-      const docRef = doc(this.firestore, 'consultants', this.userId);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        this.consultantData = { ...this.consultantData, ...docSnap.data() };
+        const docRef = doc(this.firestore, 'consultants', this.userId);
+        const docSnap = await getDoc(docRef);
 
-        
-  // Sort dates once here
-  if (this.consultantData.availableDates?.length) {
-    this.consultantData.availableDates.sort();
-  }
-        // Convert existing times to 24-hour format if needed
-        if (this.consultantData.availabilityFromTime) {
-          this.consultantData.availabilityFromTime = this.convertTo24HourFormat(this.consultantData.availabilityFromTime);
+        if (docSnap.exists()) {
+          this.consultantData = { ...this.consultantData, ...docSnap.data() };
+          if (this.consultantData.availableDates?.length) {
+            this.consultantData.availableDates.sort();
+          }
         }
-        if (this.consultantData.availabilityToTime) {
-          this.consultantData.availabilityToTime = this.convertTo24HourFormat(this.consultantData.availabilityToTime);
-        }
+      } else {
+        this.router.navigate(['/']);
       }
-    } else {
-      this.router.navigate(['/']);
-    }
+    });
   }
 
-  // Add these new methods for time handling
   private convertTo24HourFormat(timeString: string): string {
     if (!timeString) return '';
-
-    // Handle case if already in 24-hour format
-    if (/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(timeString)) {
-      return timeString;
-    }
-
-    // Handle 12-hour format with AM/PM
     const time = timeString.toLowerCase().trim();
-    let [hours, minutes] = time.replace(/[ap]m/, '').trim().split(/[ :]/);
-    
-    if (time.includes('pm') && hours !== '12') {
-      hours = (parseInt(hours, 10) + 12).toString();
-    } else if (time.includes('am') && hours === '12') {
-      hours = '00';
-    }
+    let [timePart, modifier] = time.includes('am') || time.includes('pm')
+      ? [time.replace(/(am|pm)/, '').trim(), time.includes('pm') ? 'pm' : 'am']
+      : [time, ''];
 
-    return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+    let [hours, minutes] = timePart.split(':');
+    hours = hours.trim();
+    minutes = minutes?.trim() || '00';
+
+    let hourNum = parseInt(hours, 10);
+    if (modifier === 'pm' && hourNum !== 12) hourNum += 12;
+    if (modifier === 'am' && hourNum === 12) hourNum = 0;
+
+    return `${hourNum.toString().padStart(2, '0')}:${minutes.padStart(2, '0')}`;
   }
 
-  private validateTimes(): boolean {
-    const from = this.consultantData.availabilityFromTime;
-    const to = this.consultantData.availabilityToTime;
+  private convertTo12HourFormat(time24: string): string {
+    if (!time24) return '';
+    const [hourStr, minutes] = time24.split(':');
+    let hour = parseInt(hourStr, 10);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    hour = hour % 12 || 12;
+    return `${hour}:${minutes} ${ampm}`;
+  }
 
-    // Basic format validation
-    if (!/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(from) || 
-        !/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(to)) {
-      alert('Please enter times in valid HH:mm format (e.g., 09:00 or 17:30)');
+  private validateTimes(from: string, to: string): boolean {
+    if (!/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(from) || !/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(to)) {
+      alert('Please enter times in HH:mm format (e.g., 09:00 or 17:30)');
       return false;
     }
 
-    // Convert to minutes for comparison
     const [fromHours, fromMins] = from.split(':').map(Number);
     const [toHours, toMins] = to.split(':').map(Number);
-    
     const fromTotal = fromHours * 60 + fromMins;
     const toTotal = toHours * 60 + toMins;
 
@@ -116,23 +106,21 @@ export class Consultantdashboard implements OnInit {
     }
 
     if (fromMins % 30 !== 0 || toMins % 30 !== 0) {
-      alert('Times must be in 30-minute increments (e.g., 09:00 or 09:30)');
+      alert('Times must be in 30-minute increments');
       return false;
     }
 
     return true;
   }
 
-  // Update the saveProfile method
   async saveProfile() {
-    // Convert input times to 24-hour format before saving
-    this.consultantData.availabilityFromTime = this.convertTo24HourFormat(this.consultantData.availabilityFromTime);
-    this.consultantData.availabilityToTime = this.convertTo24HourFormat(this.consultantData.availabilityToTime);
+    const from24 = this.convertTo24HourFormat(this.consultantData.availabilityFromTime);
+    const to24 = this.convertTo24HourFormat(this.consultantData.availabilityToTime);
 
-    // Validate times
-    if (!this.validateTimes()) {
-      return;
-    }
+    if (!this.validateTimes(from24, to24)) return;
+
+    this.consultantData.availabilityFromTime = this.convertTo12HourFormat(from24);
+    this.consultantData.availabilityToTime = this.convertTo12HourFormat(to24);
 
     const requiredFields = [
       'name', 'email', 'phone', 'bio', 'expertise',
@@ -147,7 +135,7 @@ export class Consultantdashboard implements OnInit {
       }
     }
 
-    if (!this.consultantData.availableDates || this.consultantData.availableDates.length === 0) {
+    if (!this.consultantData.availableDates?.length) {
       alert('Please select at least one available date.');
       return;
     }
@@ -158,13 +146,11 @@ export class Consultantdashboard implements OnInit {
     alert('Profile saved successfully!');
   }
 
-  // Keep all other existing methods unchanged
   async uploadImage(event: any) {
     const file = event.target.files[0];
     if (!file) return;
 
     this.uploadingImage = true;
-
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', 'consultant_unsigned');
@@ -216,143 +202,77 @@ export class Consultantdashboard implements OnInit {
       alert('Certificate not uploaded yet.');
     }
   }
- 
 
-// addAvailableDate() {
-//   this.dateWarning = '';
+  addAvailableDate() {
+    this.dateWarning = '';
 
-//   if (!this.newAvailableDate) {
-//     this.dateWarning = "⚠️ Please select a valid date.";
-//     return;
-//   }
-
-//   const today = new Date().toISOString().split("T")[0];
-//   if (this.newAvailableDate < today) {
-//     this.dateWarning = "⚠️ Please choose a future date.";
-//     return;
-//   }
-
-//   // ✅ Date format validation - check if it's a real calendar date (e.g., not Feb 30)
-//   const parts = this.newAvailableDate.split('-');
-//   const year = parseInt(parts[0], 10);
-//   const month = parseInt(parts[1], 10) - 1; // JS months are 0-indexed
-//   const day = parseInt(parts[2], 10);
-
-//   const dateObj = new Date(year, month, day);
-//   if (
-//     dateObj.getFullYear() !== year ||
-//     dateObj.getMonth() !== month ||
-//     dateObj.getDate() !== day
-//   ) {
-//     this.dateWarning = "⚠️ Invalid calendar date.";
-//     return;
-//   }
-
-//   if (!this.consultantData.availableDates) {
-//     this.consultantData.availableDates = [];
-//   }
-
-//   if (this.consultantData.availableDates.includes(this.newAvailableDate)) {
-//     this.dateWarning = "⚠️ This date is already added.";
-//     return;
-//   }
-
-//   this.consultantData.availableDates.push(this.newAvailableDate);
-//   this.newAvailableDate = '';
-// }
-addAvailableDate() {
-  this.dateWarning = '';
-
-  if (!this.newAvailableDate) {
-    this.dateWarning = "⚠️ Please select a valid date.";
-    return;
-  }
-
-  const parts = this.newAvailableDate.split('-');
-  const yearStr = parts[0];
-
-  if (yearStr.length !== 4 || !/^\d{4}$/.test(yearStr)) {
-    this.dateWarning = "⚠️ Please select a valid date Year .";
-    return;
-  }
-
-  const year = parseInt(yearStr, 10);
-  const month = parseInt(parts[1], 10) - 1;
-  const day = parseInt(parts[2], 10);
-
-  const dateObj = new Date(year, month, day);
-  if (
-    dateObj.getFullYear() !== year ||
-    dateObj.getMonth() !== month ||
-    dateObj.getDate() !== day
-  ) {
-    this.dateWarning = "⚠️ Invalid calendar date.";
-    return;
-  }
-
-  const today = new Date().toISOString().split("T")[0];
-  if (this.newAvailableDate < today) {
-    this.dateWarning = "⚠️ Please choose a future date.";
-    return;
-  }
-
-  if (!this.consultantData.availableDates) {
-    this.consultantData.availableDates = [];
-  }
-
-  if (this.consultantData.availableDates.includes(this.newAvailableDate)) {
-    this.dateWarning = "⚠️ This date is already added.";
-    return;
-  }
-
-  this.consultantData.availableDates.push(this.newAvailableDate);
-  this.newAvailableDate = '';
-}
-
-
-
-
-  // removeDate(date: string) {
-  //   this.consultantData.availableDates = this.consultantData.availableDates.filter((d: string) => d !== date);
-  // }
-  async removeDate(date: string) {
-  this.dateRemoveWarning = ''; // Clear previous warning
-
-  try {
-    // Firestore reference to sessions collection
-    const sessionsRef = collection(this.firestore, 'sessions');
-
-    // Query for sessions with this consultant and this date
-    const q = query(
-      sessionsRef,
-      where('consultantUid', '==', this.userId),
-      where('availableDate', '==', date)
-    );
-
-    const querySnapshot = await getDocs(q);
-
-    if (!querySnapshot.empty) {
-      // Block removal if sessions exist
-      this.dateRemoveWarning = `❌ Cannot remove ${this.formatDateDisplay(date)} — sessions already booked.`;
-      console.warn(`Blocked date removal: sessions found on ${date}`);
+    if (!this.newAvailableDate) {
+      this.dateWarning = "⚠️ Please select a valid date.";
       return;
     }
 
-    // No sessions found, proceed with removal
-    this.consultantData.availableDates = this.consultantData.availableDates.filter((d: string) => d !== date);
-    console.log(`Date removed: ${date}`);
-  } catch (error) {
-    console.error('Error checking for sessions:', error);
-    this.dateRemoveWarning = '⚠️ Unable to verify session bookings. Try again later.';
+    const parts = this.newAvailableDate.split('-');
+    const yearStr = parts[0];
+    if (yearStr.length !== 4 || !/^\d{4}$/.test(yearStr)) {
+      this.dateWarning = "⚠️ Please select a valid date Year.";
+      return;
+    }
+
+    const year = parseInt(yearStr, 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const day = parseInt(parts[2], 10);
+    const dateObj = new Date(year, month, day);
+    if (dateObj.getFullYear() !== year || dateObj.getMonth() !== month || dateObj.getDate() !== day) {
+      this.dateWarning = "⚠️ Invalid calendar date.";
+      return;
+    }
+
+    const today = new Date().toISOString().split("T")[0];
+    if (this.newAvailableDate < today) {
+      this.dateWarning = "⚠️ Please choose a future date.";
+      return;
+    }
+
+    if (!this.consultantData.availableDates) {
+      this.consultantData.availableDates = [];
+    }
+
+    if (this.consultantData.availableDates.includes(this.newAvailableDate)) {
+      this.dateWarning = "⚠️ This date is already added.";
+      return;
+    }
+
+    this.consultantData.availableDates.push(this.newAvailableDate);
+    this.newAvailableDate = '';
   }
-}
 
+  async removeDate(date: string) {
+    this.dateRemoveWarning = '';
+    try {
+      const sessionsRef = collection(this.firestore, 'sessions');
+      const q = query(
+        sessionsRef,
+        where('consultantUid', '==', this.userId),
+        where('availableDate', '==', date)
+      );
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        this.dateRemoveWarning = `❌ Cannot remove ${this.formatDateDisplay(date)} — sessions already booked.`;
+        return;
+      }
 
+      this.consultantData.availableDates = this.consultantData.availableDates.filter((d: string) => d !== date);
+    } catch (error) {
+      console.error('Error checking for sessions:', error);
+      this.dateRemoveWarning = '⚠️ Unable to verify session bookings. Try again later.';
+    }
+  }
 
-   formatDateDisplay(isoDate: string): string {
+  formatDateDisplay(isoDate: string): string {
     const [year, month, day] = isoDate.split("-");
     return `${day}-${month}-${year}`;
   }
+
   cancelEdit() {
     this.editProfile = false;
   }
