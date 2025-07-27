@@ -15,4 +15,9 @@ export class ClientDashboard {
   goToConsultants() {
     this.router.navigate(['/pages/consultentprofile']);
   }
+
+  ngOnInit() {
+  console.log('ClientDashboard Loaded');
+}
+
 }
