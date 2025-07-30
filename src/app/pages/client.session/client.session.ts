@@ -208,16 +208,18 @@ if (this.consultant.availableDates) {
     const paymentId = doc(collection(this.firestore, 'payments')).id;
 
     const sessionData = {
-      id: this.sessionId,
-      clientUid: user.uid,
-      clientName,
-      consultantUid: this.consultantId,
-      availableDate: this.selectedDate,
-      availableTime: this.selectedSlot.time24,
-      displayTime: this.selectedSlot.display,
-      consultationRates: this.amount,
-      createdAt: new Date().toISOString()
-    };
+  id: this.sessionId,
+  clientUid: user.uid,
+  clientName,
+  consultantUid: this.consultantId,
+  availableDate: this.selectedDate,
+  availableTime: this.selectedSlot.time24,             // 24-hr format
+  availableTimeDisplay: this.selectedSlot.displayTime, // AM/PM format
+  displayTime: this.selectedSlot.display,              // Full range (e.g., 10:00 AM - 10:30 AM)
+  consultationRates: this.amount,
+  createdAt: new Date().toISOString()
+};
+
 
     if (this.payLater) {
       await setDoc(sessionRef, {

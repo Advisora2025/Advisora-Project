@@ -29,23 +29,30 @@
                 <span
                   class="badge"
                   [ngClass]="{
-                    'bg-success': session.paymentStatus === 'Paid',
-                    'bg-danger': session.paymentStatus === 'Unpaid',
-                    'bg-secondary': session.paymentStatus !== 'Paid' && session.paymentStatus !== 'Unpaid'
+                    'bg-success': session.paymentStatus === 'success',
+                    'bg-danger': session.paymentStatus === 'pending',
+                    'bg-secondary': session.paymentStatus !== 'success' && session.paymentStatus !== 'pending'
                   }"
                 >
                   {{ session.paymentStatus }}
                 </span>
               </td>
               <td>
-                <ng-container *ngIf="session.paymentStatus === 'Paid'">
-                  <a [href]="session.meetLink" target="_blank" class="btn btn-sm btn-outline-light">Join</a>
-                </ng-container>
-                <ng-container *ngIf="session.paymentStatus !== 'Paid'">
-                  <span class="text-muted">N/A</span>
-                </ng-container>
-              </td>
-            </tr>
+  <ng-container *ngIf="session.paymentStatus === 'success'">
+    <ng-container *ngIf="i === nearestSessionIndex">
+      <span *ngIf="countdown > 0" class="text-info fw-bold">{{ formatCountdown(countdown) }}</span>
+      <button *ngIf="countdown === 0" class="btn btn-sm btn-outline-light" (click)="startSession()">Join</button>
+    </ng-container>
+    <ng-container *ngIf="i !== nearestSessionIndex">
+      <a [href]="session.meetLink" target="_blank" class="btn btn-sm btn-outline-light">Join</a>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="session.paymentStatus !== 'success'">
+    <span class="text-muted">N/A</span>
+  </ng-container>
+</td>
+
+  </tr>
           </tbody>
         </table>
       </div>
