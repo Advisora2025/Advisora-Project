@@ -17,7 +17,7 @@ declare var Razorpay: any;
 export class ConsultentProfile implements OnInit {
   consultants: any[] = [];
   sessions: any[] = [];
-  hasPendingPayment: boolean = false;
+  // hasPendingPayment: boolean = false;
   timerInterval: any;
 
   constructor(
@@ -28,41 +28,41 @@ export class ConsultentProfile implements OnInit {
 
   ngOnInit(): void {
     this.loadConsultants();
-    this.auth.onAuthStateChanged(user => {
-      if (user) this.checkPendingSessions();
-    });
+    // this.auth.onAuthStateChanged(user => {
+    //   if (user) this.checkPendingSessions();
+    // });
   }
 
-  dismissPendingPayment(event: Event) {
-    event.stopPropagation();
-    this.hasPendingPayment = false;
-    sessionStorage.setItem('pendingPaymentDismissed', 'true');
-  }
+  // dismissPendingPayment(event: Event) {
+  //   event.stopPropagation();
+  //   this.hasPendingPayment = false;
+  //   sessionStorage.setItem('pendingPaymentDismissed', 'true');
+  // }
 
-  async checkPendingSessions() {
-    const user = this.auth.currentUser;
-    if (!user) return;
+  // async checkPendingSessions() {
+  //   const user = this.auth.currentUser;
+  //   if (!user) return;
 
-    if (sessionStorage.getItem('pendingPaymentDismissed') === 'true') {
-      this.hasPendingPayment = false;
-      return;
-    }
+  //   if (sessionStorage.getItem('pendingPaymentDismissed') === 'true') {
+  //     this.hasPendingPayment = false;
+  //     return;
+  //   }
 
-    const q = query(
-      collection(this.firestore, 'sessions'),
-      where('clientUid', '==', user.uid),
-      where('paymentStatus', '==', 'pending')
-    );
+  //   const q = query(
+  //     collection(this.firestore, 'sessions'),
+  //     where('clientUid', '==', user.uid),
+  //     where('paymentStatus', '==', 'pending')
+  //   );
 
-    const querySnapshot = await getDocs(q);
-    const now = new Date();
+  //   const querySnapshot = await getDocs(q);
+  //   const now = new Date();
 
-    this.hasPendingPayment = querySnapshot.docs.some(doc => {
-      const data = doc.data();
-      const sessionTime = this.parseSessionDateTime(data['availableDate'], data['availableTime']);
-      return sessionTime > now;
-    });
-  }
+  //   this.hasPendingPayment = querySnapshot.docs.some(doc => {
+  //     const data = doc.data();
+  //     const sessionTime = this.parseSessionDateTime(data['availableDate'], data['availableTime']);
+  //     return sessionTime > now;
+  //   });
+  // }
 
   loadConsultants() {
     const colRef = collection(this.firestore, 'consultants');
@@ -96,14 +96,14 @@ export class ConsultentProfile implements OnInit {
           ...data,
           sessionDateTime,
           isNearestUpcoming: false,
-          paymentStatus: data['paymentStatus'],
+          // paymentStatus: data['paymentStatus'],
           isJoinEnabled: false
         };
       })
       .filter(session => session.sessionDateTime > now)
       .sort((a, b) => a.sessionDateTime.getTime() - b.sessionDateTime.getTime());
 
-    this.hasPendingPayment = sessions.some(s => s.paymentStatus === 'pending');
+    // this.hasPendingPayment = sessions.some(s => s.paymentStatus === 'pending');
 
     if (sessions.length > 0) {
       sessions[0].isNearestUpcoming = true;

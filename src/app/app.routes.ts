@@ -1,4 +1,3 @@
-
   import { Routes } from '@angular/router';
 
   import { Home } from './pages/home/home';
@@ -41,10 +40,10 @@ import { ClientSession } from './pages/client.session/client.session';
        loadChildren: () => import('./Admin/admin-routing.module').then(m => m.adminRoutes)
       
     },
-    { path: '', redirectTo: 'admin/dashboard', pathMatch: 'full' },
+    // { path: '', redirectTo: 'admin/dashboard', pathMatch: 'full' },
     { path: 'pages/consultentprofile', component: ConsultentProfile },
     { path: 'pages/aboutconsultant/:id', component: AboutConsultant },
-    { path: 'pages/clientsesssion/:id', component: ClientSession },
+    { path: 'pages/clientsession/:id', component: ClientSession },
     
     { 
       path: 'consultant', 

@@ -94,7 +94,7 @@
     <div class="modal-content bg-dark text-white border border-warning">
       <div class="modal-header">
         <h5 class="text-warning modal-title" id="paymentOptionModalLabel">
-          Choose Payment Option
+         To confirm the booking
         </h5>
         <button
           type="button"
@@ -104,21 +104,21 @@
         ></button>
       </div>
       <div class="modal-body text-center">
-        <p>Would you like to pay now or pay later?</p>
+        
         <button
           class="btn btn-success fw-bold me-2"
           (click)="confirmBooking(false)"
           data-bs-dismiss="modal"
         >
-          💳 Pay Now
+          Click here
         </button>
-        <button
+        <!-- <button
           class="btn btn-outline-warning fw-bold"
           (click)="confirmBooking(true)"
           data-bs-dismiss="modal"
         >
           🕒 Pay Later
-        </button>
+        </button> -->
       </div>
     </div>
   </div>
