@@ -72,7 +72,8 @@
             <span *ngIf="session.isNearestUpcoming" class="badge bg-success">Next Upcoming</span>
           </div>
 
-          <p><strong>Scheduled On:</strong> {{ session.availableDate }} at {{ session.availableTime }}</p>
+          <p><strong>Scheduled On:</strong> {{ session.availableDate }} at {{ session.availableTimeDisplay || session.availableTime }}</p>
+
 
           <!-- <p>
             <strong>Payment Status:</strong>

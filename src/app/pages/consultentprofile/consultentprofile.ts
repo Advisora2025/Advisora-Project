@@ -122,45 +122,48 @@ export class ConsultentProfile implements OnInit {
     }
   }
 
-  parseSessionDateTime(dateStr: string, timeStr: string): Date {
-    if (!dateStr || !timeStr) return new Date(0);
+ parseSessionDateTime(dateStr: string, timeStr: string): Date {
+  if (!dateStr || !timeStr) return new Date(0);
 
-    const [year, month, day] = dateStr.split('-').map(Number);
-    const [time, modifier] = timeStr.trim().toUpperCase().split(' ');
-    let [hours, minutes] = time.split(':').map(Number);
+  const [year, month, day] = dateStr.split('-').map(Number);
+  const [hours, minutes] = timeStr.split(':').map(Number); // Parse 24-hour time
 
-    if (modifier === 'PM' && hours < 12) hours += 12;
-    if (modifier === 'AM' && hours === 12) hours = 0;
+  return new Date(year, month - 1, day, hours, minutes);
+}
 
-    return new Date(year, month - 1, day, hours, minutes);
-  }
 
   setupCountdown(session: any) {
-    if (this.timerInterval) clearInterval(this.timerInterval);
+  const updateCountdown = () => {
+    const now = new Date().getTime();
+    const target = session.sessionDateTime.getTime();
+    const diff = target - now;
 
-    this.timerInterval = setInterval(() => {
-      const now = new Date().getTime();
-      const target = session.sessionDateTime.getTime();
-      const diff = target - now;
+    if (diff <= 0) {
+      session.countdown = { hours: 0, minutes: 0, seconds: 0 };
+      session.isJoinEnabled = session.paymentStatus === 'success';
+      clearInterval(session.timerInterval);
+      return;
+    }
 
-      if (diff <= 0) {
-        session.countdown = { hours: 0, minutes: 0, seconds: 0 };
-        session.isJoinEnabled = session.paymentStatus === 'success';
-        clearInterval(this.timerInterval);
-        return;
-      }
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    session.countdown = { hours, minutes, seconds };
+  };
 
-      session.countdown = { hours, minutes, seconds };
-    }, 1000);
-  }
+  updateCountdown(); // initialize immediately
+  session.timerInterval = setInterval(updateCountdown, 1000);
+}
 
-  joinSession(session: any) {
-    alert(`Joining session with ID: ${session.id}`);
-  }
+
+ joinSession(session: any) {
+  console.log('Joining session with ID:', session.id);
+  this.router.navigate([`/sessionchat/${session.id}`]);
+
+}
+
+
 
   async retryPayment(session: any) {
     const user = this.auth.currentUser;

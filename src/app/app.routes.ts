@@ -13,6 +13,7 @@ import { AdminGuard } from './Admin/admin.guard';
 
 import { ConsultantSidebar } from './components/consultant-sidebar/consultant-sidebar';
 import { ClientSession } from './pages/client.session/client.session';
+import { Sessionchat } from './pages/sessionchat/sessionchat';
   // export const routes: Routes = [];
 
   export const routes: Routes = [
@@ -43,7 +44,12 @@ import { ClientSession } from './pages/client.session/client.session';
     // { path: '', redirectTo: 'admin/dashboard', pathMatch: 'full' },
     { path: 'pages/consultentprofile', component: ConsultentProfile },
     { path: 'pages/aboutconsultant/:id', component: AboutConsultant },
-    { path: 'pages/clientsession/:id', component: ClientSession },
+    { path: 'pages/clientsesssion/:id', component: ClientSession },
+    {
+  path: 'sessionchat/:sessionId',
+  component: Sessionchat
+},
+
     
     { 
       path: 'consultant', 
