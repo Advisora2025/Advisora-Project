@@ -6,6 +6,7 @@ import { Payments } from './payments/payments';
 import { Users } from './users/users';
 import { EditProfile } from './edit-profile/edit-profile';
 import { AdminGuard } from './admin.guard';
+import { Session } from './session/session';
 
 export const adminRoutes: Routes = [
   {
@@ -16,7 +17,8 @@ export const adminRoutes: Routes = [
       { path: 'users', component: Users , canActivate: [AdminGuard]},
       { path: 'consultants', component: Consultants, canActivate: [AdminGuard]},
       { path: 'payments', component: Payments, canActivate: [AdminGuard] },
-      { path: 'edit-profile', component: EditProfile, canActivate: [AdminGuard]}
+      { path: 'edit-profile', component: EditProfile, canActivate: [AdminGuard]},
+      { path: 'session', component: Session, canActivate: [AdminGuard]}
   
     ]
   }

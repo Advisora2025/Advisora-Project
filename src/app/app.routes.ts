@@ -34,12 +34,23 @@ import { Sessionchat } from './pages/sessionchat/sessionchat';
     { path: 'auth', loadChildren: () => import('./auth/auth-routing-module').then(m => m.AuthRoutingModule) },
     // { path: 'admin/dashboard', component: Dashboard },
     
-    {
-      path: 'admin',
-      component:AdminNavbar,
-       canActivate: [AdminGuard],
-       loadChildren: () => import('./Admin/admin-routing.module').then(m => m.adminRoutes)
+    // {
+    //   path: 'admin',
+    //   component:AdminNavbar,
+    //    canActivate: [AdminGuard],
+    //    loadChildren: () => import('./Admin/admin-routing.module').then(m => m.adminRoutes)
       
+    // },
+    {
+      path: 'admin', 
+      component: AdminNavbar, // layout
+      canActivate: [AdminGuard],
+      children: [
+        {
+          path: '',
+          loadChildren: () => import('./Admin/admin-routing.module').then(m => m.adminRoutes)
+        }
+      ] 
     },
     // { path: '', redirectTo: 'admin/dashboard', pathMatch: 'full' },
     { path: 'pages/consultentprofile', component: ConsultentProfile },

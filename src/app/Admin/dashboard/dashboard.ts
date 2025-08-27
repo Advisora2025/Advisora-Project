@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { NavigationEnd, RouterLink, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -10,6 +11,16 @@ import { RouterLink } from '@angular/router';
   styleUrl: './dashboard.css',
   
 })
-export class Dashboard {
-
+export class Dashboard implements OnInit{
+constructor(private router: Router) {}
+ ngOnInit(): void {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        // ✅ Remove leftover overlays that block clicks
+        document.querySelectorAll('.modal-backdrop, .show')
+          .forEach(e => e.remove());
+      }
+    });
+  
+  }
 }

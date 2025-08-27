@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -11,4 +11,10 @@ import { CommonModule } from '@angular/common';
 })
 export class ConsultantSidebar {
 
+constructor(private router: Router) {} 
+
+  logout() {    
+      this.router.navigate(['/home']);
+   
+  }
 }

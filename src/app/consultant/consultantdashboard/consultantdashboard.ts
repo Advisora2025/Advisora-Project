@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
 import { Firestore, doc, setDoc, getDoc, collection, query, where, getDocs } from '@angular/fire/firestore';
 
@@ -40,6 +40,16 @@ export class Consultantdashboard implements OnInit {
   constructor(private auth: Auth, private firestore: Firestore, private router: Router) {}
 
   async ngOnInit() {
+
+    this.router.events.subscribe(event => {
+    if (event instanceof NavigationEnd) {
+      document.querySelectorAll('.modal-backdrop, .show')
+        .forEach(e => e.remove());
+      document.body.classList.remove('modal-open'); // optional but good
+    }
+  });
+  
+
     this.auth.onAuthStateChanged(async (user) => {
       if (user) {
         this.userId = user.uid;

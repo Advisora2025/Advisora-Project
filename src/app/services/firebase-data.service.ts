@@ -36,4 +36,11 @@ export class FirebaseDataService {
     const docRef = doc(this.firestore, 'consultants', id);
     return docData(docRef, { idField: 'id' });
   }
+
+  getSessions(): Observable<DocumentData[]> {
+  const sessionsRef = collection(this.firestore, 'sessions');
+  return collectionData(sessionsRef, { idField: 'id' });
+}
+
+  
 }

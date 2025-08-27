@@ -1,13 +1,54 @@
-.card:hover {
-  transform: translateY(-5px);
-  transition: 0.3s ease;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-}
 
-body {
-  background-color: #f4f6f9 !important; /* Pluto-like light grey */
-}
 
-.main-content {
-  background-color: #f4f6f9;
-}
+
+    body {
+      background-color: #ffffff !important;
+    }
+    
+    .card {
+      border: none;
+      transition: all 0.3s ease;
+      background-color: #ffc107;
+      color: white;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+    
+    .card-title {
+      border-bottom: 2px solid #000000ff;
+      padding-bottom: 10px;
+      display: inline-block;
+      color: #000000;
+    }
+    
+    .btn {
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-outline-warning {
+      border-color: #000000ff;
+      color: #000000ff;
+    }
+    
+    .btn-outline-warning:hover {
+      background-color: #ffffffff;
+      color: #000000;
+      border-color: #000000ff;
+    }
+    
+    .main-content {
+      background-color: #ffffff;
+    }
+    
+    .header-section {
+      background-color: #000000;
+      color: white;
+      padding: 20px 0;
+      margin-bottom: 30px;
+      border-bottom: 3px solid #ffc107;
+    }
+
