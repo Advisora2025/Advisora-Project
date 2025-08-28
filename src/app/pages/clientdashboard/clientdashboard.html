@@ -1,21 +1,23 @@
-<div class="dashboard d-flex flex-column justify-content-center align-items-center text-center bg-light vh-100 p-5" style="position: relative; overflow: hidden;">
-  <!-- Background Gradient Circle -->
-  <div style="position: absolute; width: 400px; height: 400px; background: radial-gradient(circle at center, #74ebd5, #ACB6E5); border-radius: 50%; top: -100px; left: -100px; z-index: 0; opacity: 0.3;"></div>
-
+<!-- Dashboard Section -->
+<div class="dashboard">
   <!-- Main Content -->
-  <div class="intro bg-white shadow p-5 rounded-4" style="max-width: 600px; z-index: 1;">
-    <h1 class="display-5 fw-bold text-primary mb-3 animate__animated animate__fadeInDown">Welcome to <span class="text-success">MindVista</span></h1>
-    <p class="lead text-muted animate__animated animate__fadeInUp">Your mental wellness partner.<br />Book sessions with trusted professionals now.</p>
+  <div class="intro shadow-lg p-5 rounded-4">
+    <h1 class="display-5 fw-bold animate__animated animate__fadeInDown">
+      Welcome to <span>MindVista</span>
+    </h1>
+    <p class="lead animate__animated animate__fadeInUp">
+      Your trusted <b>mental wellness partner</b>. <br>
+      Book sessions with top professionals anytime.
+    </p>
   </div>
 
-  <!-- Alert Icon -->
+  <!-- Glowing Floating Button -->
   <div 
-    class="alert-icon bg-primary text-white d-flex justify-content-center align-items-center rounded-circle shadow-lg animate__animated animate__pulse animate__infinite"
-    style="width: 70px; height: 70px; position: absolute; right: 40px; bottom: 40px; cursor: pointer; font-size: 32px;"
+    class="alert-icon animate__animated animate__pulse animate__infinite"
     (click)="goToConsultants()"
     title="Click to view consultants"
   >
-    &gt;
+    →
     <span class="visually-hidden">View Consultants</span>
   </div>
 </div>
