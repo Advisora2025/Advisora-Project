@@ -339,11 +339,11 @@ async bookSession() {
   }
 
   try {
-    console.log(this.consultantId);
+    console.log(this.consultantId)
 
     // CORS-safe backend call to Vercel
     const res: any = await this.http.post(
-     'https://advisora-backendserver.vercel.app/create-order',
+     'https://advisora-backendserver.vercel.app/api/create-order',
       {
         // chnage the user.uid to conslutant uid
         
