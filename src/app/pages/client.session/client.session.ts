@@ -340,7 +340,7 @@ async bookSession() {
   try {
     // CORS-safe backend call to Vercel
     const res: any = await this.http.post(
-      'https://advisorabackend.vercel.app/api/razorpay',
+      'https://advisorabackend-8wqayzwsg-rakeshs-projects-50c1ec62.vercel.app/api/razorpay',
       {
         amount: this.amount,
         receipt: this.sessionId
