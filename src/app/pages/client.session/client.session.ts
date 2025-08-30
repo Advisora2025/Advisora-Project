@@ -4,6 +4,7 @@ import { Firestore, doc, getDoc, collection, setDoc, query, where, getDocs } fro
 import { Auth } from '@angular/fire/auth';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 import { HttpClient } from '@angular/common/http';
 
 declare var Razorpay: any;
@@ -338,9 +339,10 @@ async bookSession() {
   }
 
   try {
+
     // CORS-safe backend call to Vercel
     const res: any = await this.http.post(
-      'https://advisora-backend.vercel.app/create-order',
+     'https://advisora-backend.vercel.app/api/create-order',
       {
         amount: this.amount,
         receipt: this.sessionId
