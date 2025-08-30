@@ -189,109 +189,219 @@ if (this.consultant.availableDates) {
     this.bookSession();
   }
 
-  async bookSession() {
-    if (!this.selectedSlot || !this.selectedSlot.available) {
-      return alert('Please select a valid available time slot');
-    }
+//   async bookSession() {
+//     if (!this.selectedSlot || !this.selectedSlot.available) {
+//       return alert('Please select a valid available time slot');
+//     }
 
-    const user = this.auth.currentUser;
-    if (!user) return alert('Please log in to book a session.');
+//     const user = this.auth.currentUser;
+//     if (!user) return alert('Please log in to book a session.');
 
-    const clientDocSnap = await getDoc(doc(this.firestore, 'clients', user.uid));
-    let clientName = user.displayName || '';
-    if (clientDocSnap.exists()) {
-      clientName = clientDocSnap.data()['name'] || clientName;
-    }
+//     const clientDocSnap = await getDoc(doc(this.firestore, 'clients', user.uid));
+//     let clientName = user.displayName || '';
+//     if (clientDocSnap.exists()) {
+//       clientName = clientDocSnap.data()['name'] || clientName;
+//     }
 
-    this.sessionId = doc(collection(this.firestore, 'sessions')).id;
-    const sessionRef = doc(this.firestore, 'sessions', this.sessionId);
-    const paymentId = doc(collection(this.firestore, 'payments')).id;
+//     this.sessionId = doc(collection(this.firestore, 'sessions')).id;
+//     const sessionRef = doc(this.firestore, 'sessions', this.sessionId);
+//     const paymentId = doc(collection(this.firestore, 'payments')).id;
 
-    const sessionData = {
-  id: this.sessionId,
-  clientUid: user.uid,
-  clientName,
-  consultantUid: this.consultantId,
-  availableDate: this.selectedDate,
-  availableTime: this.selectedSlot.time24,             // 24-hr format
-  availableTimeDisplay: this.selectedSlot.displayTime, // AM/PM format
-  displayTime: this.selectedSlot.display,              // Full range (e.g., 10:00 AM - 10:30 AM)
-  consultationRates: this.amount,
-  createdAt: new Date().toISOString()
-};
+//     const sessionData = {
+//   id: this.sessionId,
+//   clientUid: user.uid,
+//   clientName,
+//   consultantUid: this.consultantId,
+//   availableDate: this.selectedDate,
+//   availableTime: this.selectedSlot.time24,             // 24-hr format
+//   availableTimeDisplay: this.selectedSlot.displayTime, // AM/PM format
+//   displayTime: this.selectedSlot.display,              // Full range (e.g., 10:00 AM - 10:30 AM)
+//   consultationRates: this.amount,
+//   createdAt: new Date().toISOString()
+// };
 
 
-    if (this.payLater) {
-      await setDoc(sessionRef, {
-        ...sessionData,
-        paymentStatus: 'pending',
-        bookingType: 'pay_later'
-      });
-      alert('Session booked. You can pay later.');
-      this.router.navigate(['/pages/consultentprofile']);
-      return;
-    }
+//     if (this.payLater) {
+//       await setDoc(sessionRef, {
+//         ...sessionData,
+//         paymentStatus: 'pending',
+//         bookingType: 'pay_later'
+//       });
+//       alert('Session booked. You can pay later.');
+//       this.router.navigate(['/pages/consultentprofile']);
+//       return;
+//     }
 
-    try {
-      const res: any = await this.http.post('https://advisorabackend.vercel.app/api/razorpay', {
-        consultantId: this.consultantId,
-        amount: this.amount,
-        sessionId: this.sessionId
-      }).toPromise();
+//     try {
+//       const res: any = await this.http.post('https://advisorabackend.vercel.app/api/razorpay', {
+//         consultantId: this.consultantId,
+//         amount: this.amount,
+//         sessionId: this.sessionId
+//       }).toPromise();
 
-      const rzp = new Razorpay({
-        key: res.key,
-        amount: this.amount * 100,
-        currency: 'INR',
-        name: 'Advisora',
-        description: 'Session Booking',
-        order_id: res.orderId,
-        handler: async (response: any) => {
-          await setDoc(sessionRef, {
-            ...sessionData,
-            paymentStatus: 'success',
-            bookingType: 'pay_now'
-          });
+//       const rzp = new Razorpay({
+//         key: res.key,
+//         amount: this.amount * 100,
+//         currency: 'INR',
+//         name: 'Advisora',
+//         description: 'Session Booking',
+//         order_id: res.orderId,
+//         handler: async (response: any) => {
+//           await setDoc(sessionRef, {
+//             ...sessionData,
+//             paymentStatus: 'success',
+//             bookingType: 'pay_now'
+//           });
 
-          await setDoc(doc(this.firestore, 'payments', paymentId), {
-            paymentId,
-            sessionId: this.sessionId,
-            clientUid: user.uid,
-            consultantUid: this.consultantId,
-            amount: this.amount,
-            orderId: response.razorpay_order_id,
-            paymentGateway_id: response.razorpay_payment_id,
-            signature: response.razorpay_signature,
-            createdAt: new Date().toISOString()
-          });
+//           await setDoc(doc(this.firestore, 'payments', paymentId), {
+//             paymentId,
+//             sessionId: this.sessionId,
+//             clientUid: user.uid,
+//             consultantUid: this.consultantId,
+//             amount: this.amount,
+//             orderId: response.razorpay_order_id,
+//             paymentGateway_id: response.razorpay_payment_id,
+//             signature: response.razorpay_signature,
+//             createdAt: new Date().toISOString()
+//           });
 
-          alert('Payment successful & session booked!');
-          this.router.navigate(['/pages/consultentprofile']);
-        },
-        prefill: {
-          name: clientName,
-          email: user.email || ''
-        },
-        theme: {
-          color: '#F37254'
-        },
-        modal: {
-          ondismiss: () => {
-            alert('Payment cancelled. Please try again.');
-            this.selectedSlot = null;
-            this.payLater = false;
-          }
-        }
-      });
+//           alert('Payment successful & session booked!');
+//           this.router.navigate(['/pages/consultentprofile']);
+//         },
+//         prefill: {
+//           name: clientName,
+//           email: user.email || ''
+//         },
+//         theme: {
+//           color: '#F37254'
+//         },
+//         modal: {
+//           ondismiss: () => {
+//             alert('Payment cancelled. Please try again.');
+//             this.selectedSlot = null;
+//             this.payLater = false;
+//           }
+//         }
+//       });
 
-      rzp.on('payment.failed', () => {
-        alert('Payment failed. Please try again.');
-      });
+//       rzp.on('payment.failed', () => {
+//         alert('Payment failed. Please try again.');
+//       });
 
-      rzp.open();
-    } catch (err) {
-      console.error('Error initiating payment:', err);
-      alert('Booking failed. Please try again.');
-    }
+//       rzp.open();
+//     } catch (err) {
+//       console.error('Error initiating payment:', err);
+//       alert('Booking failed. Please try again.');
+//     }
+//   }
+async bookSession() {
+  if (!this.selectedSlot || !this.selectedSlot.available) {
+    return alert('Please select a valid available time slot.');
   }
+
+  const user = this.auth.currentUser;
+  if (!user) return alert('Please log in to book a session.');
+
+  const clientDocSnap = await getDoc(doc(this.firestore, 'clients', user.uid));
+  let clientName = user.displayName || '';
+  if (clientDocSnap.exists()) {
+    clientName = clientDocSnap.data()['name'] || clientName;
+  }
+
+  this.sessionId = doc(collection(this.firestore, 'sessions')).id;
+  const sessionRef = doc(this.firestore, 'sessions', this.sessionId);
+  const paymentId = doc(collection(this.firestore, 'payments')).id;
+
+  const sessionData = {
+    id: this.sessionId,
+    clientUid: user.uid,
+    clientName,
+    consultantUid: this.consultantId,
+    availableDate: this.selectedDate,
+    availableTime: this.selectedSlot.time24,
+    availableTimeDisplay: this.selectedSlot.displayTime,
+    displayTime: this.selectedSlot.display,
+    consultationRates: this.amount,
+    createdAt: new Date().toISOString()
+  };
+
+  // Pay Later Flow
+  if (this.payLater) {
+    await setDoc(sessionRef, {
+      ...sessionData,
+      paymentStatus: 'pending',
+      bookingType: 'pay_later'
+    });
+    alert('Session booked. You can pay later.');
+    this.router.navigate(['/pages/consultentprofile']);
+    return;
+  }
+
+  try {
+    // CORS-safe backend call to Vercel
+    const res: any = await this.http.post(
+      'https://advisorabackend.vercel.app/api/razorpay',
+      {
+        amount: this.amount,
+        receipt: this.sessionId
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    ).toPromise();
+
+    const rzp = new Razorpay({
+      key: res.key_id || res.key,  // your backend should return key_id
+      amount: this.amount * 100,
+      currency: 'INR',
+      name: 'Advisora',
+      description: 'Session Booking',
+      order_id: res.id,  // order ID returned from Razorpay backend
+      handler: async (response: any) => {
+        // Payment successful
+        await setDoc(sessionRef, {
+          ...sessionData,
+          paymentStatus: 'success',
+          bookingType: 'pay_now'
+        });
+
+        await setDoc(doc(this.firestore, 'payments', paymentId), {
+          paymentId,
+          sessionId: this.sessionId,
+          clientUid: user.uid,
+          consultantUid: this.consultantId,
+          amount: this.amount,
+          orderId: response.razorpay_order_id,
+          paymentGateway_id: response.razorpay_payment_id,
+          signature: response.razorpay_signature,
+          createdAt: new Date().toISOString()
+        });
+
+        alert('Payment successful & session booked!');
+        this.router.navigate(['/pages/consultentprofile']);
+      },
+      prefill: {
+        name: clientName,
+        email: user.email || ''
+      },
+      theme: { color: '#F37254' },
+      modal: {
+        ondismiss: () => {
+          alert('Payment cancelled. Please try again.');
+          this.selectedSlot = null;
+          this.payLater = false;
+        }
+      }
+    });
+
+    rzp.on('payment.failed', () => {
+      alert('Payment failed. Please try again.');
+    });
+
+    rzp.open();
+
+  } catch (err) {
+    console.error('Error initiating payment:', err);
+    alert('Booking failed. Please try again.');
+  }
+}
+
 }
