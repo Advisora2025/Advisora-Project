@@ -342,7 +342,7 @@ async bookSession() {
 
     // CORS-safe backend call to Vercel
     const res: any = await this.http.post(
-     'https://advisora-backend.vercel.app/api/create-order',
+     'https://advisora-backendserver.vercel.app/api/create-order',
       {
         amount: this.amount,
         receipt: this.sessionId
