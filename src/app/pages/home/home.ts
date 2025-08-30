@@ -175,7 +175,7 @@ export class Home implements AfterViewInit {
         const role = userData.role;
 
         if (role === 'consultant') {
-          const consultantRef = doc(this.firestore, 'consultants/${uid}');
+          const consultantRef = doc(this.firestore, `consultants/${uid}`);
           const consultantSnap = await getDoc(consultantRef);
           if (!consultantSnap.exists()) {
             await setDoc(consultantRef, {
