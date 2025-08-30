@@ -233,7 +233,7 @@ if (this.consultant.availableDates) {
     }
 
     try {
-      const res: any = await this.http.post('http://localhost:3000/api/create-order', {
+      const res: any = await this.http.post('https://advisorabackend.vercel.app/api/razorpay', {
         consultantId: this.consultantId,
         amount: this.amount,
         sessionId: this.sessionId
