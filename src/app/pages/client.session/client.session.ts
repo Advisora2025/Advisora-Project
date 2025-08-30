@@ -339,7 +339,7 @@ async bookSession() {
   }
 
   try {
-    console.log(user.uid);
+    console.log(this.consultantId);
 
     // CORS-safe backend call to Vercel
     const res: any = await this.http.post(
@@ -347,7 +347,7 @@ async bookSession() {
       {
         // chnage the user.uid to conslutant uid
         
-        consultantId : user.uid,
+        consultantId : this.consultantId,
         amount: this.amount,
         receipt: this.sessionId
       },
