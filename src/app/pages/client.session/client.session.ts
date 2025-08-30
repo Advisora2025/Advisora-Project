@@ -344,6 +344,8 @@ async bookSession() {
     const res: any = await this.http.post(
      'https://advisora-backendserver.vercel.app/api/create-order',
       {
+        // chnage the user.uid to conslutant uid
+        consultantId : user.uid,
         amount: this.amount,
         receipt: this.sessionId
       },
